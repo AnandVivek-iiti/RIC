@@ -1,4 +1,11 @@
-import { SITE, TRACKS } from "../../utils/constants";
+import { motion } from "framer-motion";
+import PageHeader from "../../components/common/PageHeader/PageHeader";
+import Reveal from "../../components/common/Reveal/Reveal";
+import ScrollText from "../../components/common/ScrollText/ScrollText";
+import SpotlightCard from "../../components/common/SpotlightCard/SpotlightCard";
+import { SITE } from "../../utils/constants";
+
+const EASE = [0.22, 1, 0.36, 1];
 
 const values = [
   {
@@ -7,81 +14,81 @@ const values = [
   },
   {
     title: "Detours by design",
-    text: "We plan for the unexpected — leaving room in every system for the accidental discovery.",
+    text: "We plan for the unexpected, leaving room in every system for the accidental discovery.",
   },
   {
     title: "Lateral by default",
-    text: "We connect distant disciplines so that a tangent in one becomes a breakthrough in another.",
+    text: "We connect distant disciplines so a tangent in one becomes a breakthrough in another.",
   },
 ];
 
 const milestones = [
   { year: "Linear", text: "Centuries of straight-line progress built the world we know." },
   { year: "Fracture", text: "Rigid methodologies began to crack under complexity they could not model." },
-  { year: "Tangent", text: "The detour becomes the method — chasing anomalies toward new paradigms." },
+  { year: "Tangent", text: "The detour becomes the method, chasing anomalies toward new paradigms." },
   { year: "Horizon", text: "From broken logic to brilliant horizons: an era of lateral transformation." },
 ];
 
+const manifesto =
+  "Humanity has spent centuries following linear equations and rigid methodologies to build its world. The next era demands we embrace the unexpected.";
+
 export default function About() {
   return (
-    <div className="mx-auto max-w-5xl px-4 py-16">
-      <header className="max-w-2xl">
-        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-mint">About Us</p>
-        <h1 className="mt-2 font-display text-4xl font-bold text-chalk sm:text-5xl">
-          The {SITE.theme} manifesto
-        </h1>
-        <p className="mt-4 text-lg leading-relaxed text-slate-400">
-          Humanity has spent centuries following linear equations and rigid methodologies to build
-          its world; the next era demands we embrace the chaos of the unexpected.
-        </p>
-      </header>
+    <div>
+      <PageHeader eyebrow="About Us" title={`The ${SITE.theme} manifesto`} accent={[1, 2]} />
 
-      <section className="mt-14">
-        <h2 className="font-display text-2xl font-bold text-chalk">What we stand for</h2>
-        <div className="mt-6 grid gap-6 sm:grid-cols-3">
-          {values.map((value) => (
-            <div
-              key={value.title}
-              className="rounded-xl border border-mint/20 bg-ink-light/40 p-6 transition hover:-translate-y-1 hover:border-amber/50"
-            >
-              <h3 className="font-display text-lg font-semibold text-amber">{value.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-slate-400">{value.text}</p>
-            </div>
+      <section className="container-x pb-24 sm:pb-32">
+        <ScrollText
+          text={manifesto}
+          className="max-w-4xl font-display text-2xl font-medium leading-[1.2] tracking-tight text-chalk sm:text-3xl"
+        />
+      </section>
+
+      <section className="container-x py-16 sm:py-24">
+        <Reveal y={10}>
+          <p className="eyebrow">What we stand for</p>
+        </Reveal>
+        <div className="mt-10 grid gap-5 md:grid-cols-3">
+          {values.map((value, i) => (
+            <Reveal key={value.title} delay={i * 0.1}>
+              <SpotlightCard className="h-full p-8">
+                <span className="font-display text-sm tabular-nums text-mint">0{i + 1}</span>
+                <h3 className="mt-8 font-display text-2xl font-semibold tracking-tight text-chalk">
+                  {value.title}
+                </h3>
+                <p className="mt-4 leading-relaxed text-slate-400">{value.text}</p>
+              </SpotlightCard>
+            </Reveal>
           ))}
         </div>
       </section>
 
-      <section className="mt-14">
-        <h2 className="font-display text-2xl font-bold text-chalk">A single engine of transformation</h2>
-        <p className="mt-3 max-w-3xl leading-relaxed text-slate-400">
-          {SITE.theme} treats anomalies not as errors to erase, but as gateways to new paradigms. It
-          unites four streams into one engine of lateral transformation.
-        </p>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2">
-          {TRACKS.map((track, index) => (
-            <div
-              key={track.name}
-              className="flex gap-4 rounded-xl border border-mint/20 bg-ink-light/30 p-5"
+      <section className="container-x py-16 sm:py-24">
+        <Reveal y={10}>
+          <p className="eyebrow">From logic to horizon</p>
+        </Reveal>
+        <ol className="mt-12 grid gap-12 md:grid-cols-4 md:gap-8">
+          {milestones.map((item, i) => (
+            <motion.li
+              key={item.year}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 0.8, delay: i * 0.12, ease: EASE }}
+              className="relative pt-6"
             >
-              <span className="font-display text-lg font-bold text-mint">0{index + 1}</span>
-              <div>
-                <h3 className="font-display font-semibold text-chalk">{track.name}</h3>
-                <p className="mt-1 text-sm text-slate-400">{track.text}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="mt-14">
-        <h2 className="font-display text-2xl font-bold text-chalk">From logic to horizon</h2>
-        <ol className="mt-6 space-y-6 border-l border-mint/20 pl-6">
-          {milestones.map((item) => (
-            <li key={item.year} className="relative">
-              <span className="absolute -left-[1.95rem] top-1 h-3 w-3 rounded-full bg-amber ring-4 ring-amber/15" />
-              <p className="font-display font-semibold text-amber">{item.year}</p>
-              <p className="text-slate-400">{item.text}</p>
-            </li>
+              <span className="absolute left-0 top-0 h-px w-full bg-chalk/10" />
+              <motion.span
+                className="absolute left-0 top-0 h-px w-full origin-left bg-amber"
+                initial={{ scaleX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{ duration: 1.1, delay: 0.2 + i * 0.12, ease: EASE }}
+              />
+              <p className="font-display text-sm tabular-nums text-mint">0{i + 1}</p>
+              <p className="mt-3 font-display text-2xl font-semibold text-chalk">{item.year}</p>
+              <p className="mt-3 text-sm leading-relaxed text-slate-400">{item.text}</p>
+            </motion.li>
           ))}
         </ol>
       </section>

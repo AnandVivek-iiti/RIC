@@ -1,14 +1,21 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     background-color: #1e1b4b;
     font-family: Inter, system-ui, -apple-system, sans-serif;
-    color: #e2e8f0;
+    color: #cbd5e1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
   }
 
   ::selection {
@@ -20,6 +27,50 @@
   h2,
   h3 {
     font-family: "Space Grotesk", system-ui, sans-serif;
+  }
+
+  :focus-visible {
+    outline: 2px solid #f59e0b;
+    outline-offset: 3px;
+  }
+
+  /* Thin themed scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #13113a;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #312e81;
+    border-radius: 999px;
+    border: 2px solid #13113a;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #4338ca;
+  }
+
+  /* Custom cursor: hide the native one only where it is active */
+  body.custom-cursor,
+  body.custom-cursor a,
+  body.custom-cursor button,
+  body.custom-cursor [role="button"] {
+    cursor: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
   }
 }
 
@@ -37,20 +88,240 @@
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
   }
+
+  /* Shared page container */
+  .container-x {
+    width: 100%;
+    max-width: 72rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .container-x {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+
+  /* Small uppercase label with a leading rule */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: #5eead4;
+  }
+
+  .eyebrow::before {
+    content: "";
+    width: 2rem;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.6;
+  }
+
+  /* Card with a cursor-following amber glow (see SpotlightCard) */
+  .spotlight {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border: 1px solid rgba(237, 233, 254, 0.08);
+    border-radius: 1.25rem;
+    background: rgba(49, 46, 129, 0.16);
+    transition: border-color 0.4s ease, background-color 0.4s ease;
+  }
+
+  .spotlight::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    background: radial-gradient(
+      320px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(var(--glow, 245, 158, 11), 0.16),
+      transparent 70%
+    );
+  }
+
+  .spotlight:hover {
+    border-color: rgba(245, 158, 11, 0.35);
+  }
+
+  .spotlight:hover::before {
+    opacity: 1;
+  }
+
+  /* Underline form field with an animated focus line */
+  .field {
+    position: relative;
+  }
+
+  .field::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: #f59e0b;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .field:focus-within::after {
+    transform: scaleX(1);
+  }
+
+  /* Hidden until hover on devices that can hover; always visible on touch */
+  @media (hover: hover) {
+    .reveal-on-hover {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .group:hover .reveal-on-hover,
+    .reveal-on-hover:focus-within {
+      opacity: 1;
+    }
+  }
 }
 
 @layer utilities {
   /* Blueprint / chalkboard grid overlay */
   .bg-blueprint {
     background-image:
-      linear-gradient(rgba(94, 234, 212, 0.07) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(94, 234, 212, 0.07) 1px, transparent 1px);
-    background-size: 34px 34px;
+      linear-gradient(rgba(94, 234, 212, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(94, 234, 212, 0.045) 1px, transparent 1px);
+    background-size: 64px 64px;
   }
 
-  /* Outlined "broken logic" headline text */
+  /* Outlined text */
   .text-outline {
-    -webkit-text-stroke: 1.5px #f59e0b;
+    -webkit-text-stroke: 1.5px rgba(245, 158, 11, 0.55);
     color: transparent;
   }
+
+  .text-outline-soft {
+    -webkit-text-stroke: 1px rgba(237, 233, 254, 0.14);
+    color: transparent;
+  }
+}
+
+/* Slow ambient glow that sits behind the whole site */
+.ambient {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.ambient::before,
+.ambient::after {
+  content: "";
+  position: absolute;
+  width: 60vmax;
+  height: 60vmax;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.5;
+  will-change: transform;
+}
+
+.ambient::before {
+  top: -25vmax;
+  left: -15vmax;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.13), transparent 65%);
+  animation: drift-a 28s ease-in-out infinite alternate;
+}
+
+.ambient::after {
+  right: -20vmax;
+  bottom: -25vmax;
+  background: radial-gradient(circle, rgba(45, 212, 191, 0.12), transparent 65%);
+  animation: drift-b 34s ease-in-out infinite alternate;
+}
+
+@keyframes drift-a {
+  to {
+    transform: translate3d(14vmax, 10vmax, 0);
+  }
+}
+
+@keyframes drift-b {
+  to {
+    transform: translate3d(-12vmax, -8vmax, 0);
+  }
+}
+
+/* ── Animated marquee strip ── */
+.marquee {
+  overflow: hidden;
+  border-top: 1px solid rgba(237, 233, 254, 0.08);
+  border-bottom: 1px solid rgba(237, 233, 254, 0.08);
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 40s linear infinite;
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+.marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 1.4rem 2rem 1.4rem 0;
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  -webkit-text-stroke: 1px rgba(237, 233, 254, 0.28);
+  color: transparent;
+}
+
+.marquee-item:nth-child(3n) {
+  color: rgba(237, 233, 254, 0.9);
+  -webkit-text-stroke: 0;
+}
+
+.marquee-dot {
+  font-size: 0.8em;
+  color: #f59e0b;
+  -webkit-text-stroke: 0;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ── Shimmering gradient headline accent ── */
+@keyframes shimmer {
+  to {
+    background-position: 200% center;
+  }
+}
+
+.shimmer {
+  background-size: 200% auto;
+  animation: shimmer 6s linear infinite;
 }

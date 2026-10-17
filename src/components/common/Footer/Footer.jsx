@@ -1,57 +1,70 @@
 import { Link } from "react-router-dom";
 import { NAV_LINKS, SITE } from "../../../utils/constants";
+import Reveal from "../Reveal/Reveal";
+import Logo from "../Logo/Logo";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-mint/15 bg-ink-light/60">
-      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:grid-cols-3">
-        <div>
-          <h3 className="flex items-center gap-2 font-display text-lg font-bold text-chalk">
-            <img src="/logo.png" alt={`${SITE.name} logo`} className="h-7 w-7 object-contain" />
-            {SITE.name}
-          </h3>
-          <p className="mt-3 text-sm font-medium text-chalk">
-            {SITE.fullName} {SITE.year}
+    <footer className="relative z-10 mt-24 overflow-hidden border-t border-chalk/10">
+      <div className="container-x pt-20">
+        <Reveal>
+          <p
+            aria-hidden="true"
+            className="text-outline-soft select-none font-display text-[clamp(5rem,24vw,18rem)] font-bold leading-[0.8] tracking-tighter"
+          >
+            {SITE.name}’{SITE.year.slice(2)}
           </p>
-          <p className="mt-1 text-sm font-medium text-amber">{SITE.theme}</p>
-          <p className="mt-1 text-sm text-slate-400">{SITE.tagline}</p>
-        </div>
+        </Reveal>
 
-        <div>
-          <h4 className="text-sm font-semibold uppercase tracking-wide text-mint">Quick Links</h4>
-          <ul className="mt-3 space-y-2 text-sm">
-            {NAV_LINKS.map((link) => (
-              <li key={link.to}>
-                <Link to={link.to} className="text-slate-400 transition-colors hover:text-amber">
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <div className="mt-16 grid gap-12 sm:grid-cols-3">
+          <div>
+            <div className="flex items-center gap-2.5">
+              <Logo className="h-7 w-7" />
+              <p className="font-display text-lg font-semibold text-chalk">{SITE.fullName}</p>
+            </div>
+            <p className="mt-3 text-sm text-amber">{SITE.theme}</p>
+            <p className="mt-1 text-sm text-slate-500">{SITE.tagline}</p>
+          </div>
 
-        <div>
-          <h4 className="text-sm font-semibold uppercase tracking-wide text-mint">Contact</h4>
-          <ul className="mt-3 space-y-2 text-sm text-slate-400">
-            <li>
-              <a href={`mailto:${SITE.email}`} className="transition-colors hover:text-amber">
-                {SITE.email}
-              </a>
-            </li>
-            {SITE.contacts.map((contact) => (
-              <li key={contact.phone}>
-                <a href={`tel:${contact.phone}`} className="transition-colors hover:text-amber">
-                  {contact.name} — {contact.phone}
+          <nav aria-label="Footer">
+            <p className="eyebrow">Explore</p>
+            <ul className="mt-5 space-y-2.5 text-sm">
+              {NAV_LINKS.map((link) => (
+                <li key={link.to}>
+                  <Link
+                    to={link.to}
+                    className="inline-block text-slate-400 transition-all duration-300 hover:translate-x-1 hover:text-amber"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div>
+            <p className="eyebrow">Contact</p>
+            <ul className="mt-5 space-y-2.5 text-sm text-slate-400">
+              <li>
+                <a href={`mailto:${SITE.email}`} className="transition-colors hover:text-amber">
+                  {SITE.email}
                 </a>
               </li>
-            ))}
-            <li>{SITE.address}</li>
-          </ul>
+              {SITE.contacts.map((contact) => (
+                <li key={contact.phone}>
+                  <a href={`tel:${contact.phone}`} className="transition-colors hover:text-amber">
+                    {contact.name} · {contact.phone}
+                  </a>
+                </li>
+              ))}
+              <li className="pt-1 text-slate-500">{SITE.address}</li>
+            </ul>
+          </div>
         </div>
       </div>
 
-      <div className="border-t border-mint/10 py-4 text-center text-xs text-slate-500">
-        © {new Date().getFullYear()} {SITE.name} · {SITE.fullName} {SITE.year} — {SITE.tagline}
+      <div className="container-x mt-16 border-t border-chalk/10 py-6 text-xs text-slate-500">
+        © {new Date().getFullYear()} {SITE.name} · {SITE.fullName} {SITE.year}
       </div>
     </footer>
   );

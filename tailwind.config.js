@@ -9,6 +9,7 @@ export default {
           DEFAULT: "#1E1B4B",
           light: "#312E81",
           soft: "#4338CA",
+          deep: "#13113A",
         },
         // Amber — the primary glow
         amber: {
@@ -33,6 +34,9 @@ export default {
       fontFamily: {
         display: ["'Space Grotesk'", "system-ui", "sans-serif"],
         body: ["Inter", "system-ui", "sans-serif"],
+      },
+      transitionTimingFunction: {
+        expo: "cubic-bezier(0.22, 1, 0.36, 1)",
       },
     },
   },

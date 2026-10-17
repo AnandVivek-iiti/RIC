@@ -1,15 +1,17 @@
 import Navbar from "./components/common/Navbar/Navbar";
 import Footer from "./components/common/Footer/Footer";
+import CustomCursor from "./components/common/CustomCursor/CustomCursor";
+import ScrollProgress from "./components/common/ScrollProgress/ScrollProgress";
 import AppRoutes from "./routes/AppRoutes";
-import useScrollTop from "./hooks/useScrollTop";
 
 export default function App() {
-  useScrollTop();
-
   return (
-    <div className="bg-blueprint flex min-h-screen flex-col bg-ink text-slate-200">
+    <div className="bg-blueprint relative flex min-h-screen flex-col bg-ink text-slate-300">
+      <div className="ambient" aria-hidden="true" />
+      <ScrollProgress />
+      <CustomCursor />
       <Navbar />
-      <main className="flex-1">
+      <main className="relative z-10 flex-1">
         <AppRoutes />
       </main>
       <Footer />

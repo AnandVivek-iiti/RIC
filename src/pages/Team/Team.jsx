@@ -1,7 +1,12 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Mail, Crown, Star, Users } from "lucide-react";
+import { Mail } from "lucide-react";
+import Reveal from "../../components/common/Reveal/Reveal";
+import SplitText from "../../components/common/SplitText/SplitText";
+import SpotlightCard from "../../components/common/SpotlightCard/SpotlightCard";
 import { OVERALL_COORDINATORS, HEADS } from "../../data/team";
+
+const EASE = [0.22, 1, 0.36, 1];
 
 /* Brand icons (lucide v1 dropped brand logos) */
 function LinkedinIcon({ size = 14 }) {
@@ -32,15 +37,10 @@ function InstagramIcon({ size = 14 }) {
   );
 }
 
-const COORDINATOR_COLOR = "#f59e0b";
-const HEAD_COLOR = "#dc2626";
-const MEMBER_COLOR = "#2dd4bf";
-
 const SIZES = {
-  xl: "h-28 w-28 rounded-2xl text-3xl",
-  lg: "h-20 w-20 rounded-xl text-xl",
-  md: "h-16 w-16 rounded-xl text-base",
   sm: "h-12 w-12 rounded-xl text-sm",
+  xl: "h-24 w-24 rounded-2xl text-2xl",
+  lg: "h-16 w-16 rounded-xl text-lg",
 };
 
 function initialsOf(name = "") {
@@ -55,10 +55,20 @@ function initialsOf(name = "") {
   );
 }
 
-/* ── Avatar: photo with initials fallback ── */
-function Avatar({ person, size = "md" }) {
+/* A link only counts as a profile when it points past the platform homepage. */
+function isProfileLink(url) {
+  if (!url) return false;
+  try {
+    return new URL(url).pathname.replace(/\/+$/, "") !== "";
+  } catch {
+    return false;
+  }
+}
+
+/* Avatar: photo with initials fallback */
+function Avatar({ person, size = "lg" }) {
   const [broken, setBroken] = useState(false);
-  const cls = SIZES[size] ?? SIZES.md;
+  const cls = SIZES[size] ?? SIZES.lg;
 
   if (person.photo && !broken) {
     return (
@@ -75,7 +85,7 @@ function Avatar({ person, size = "md" }) {
 
   return (
     <div
-      className={`${cls} flex shrink-0 items-center justify-center font-black text-ink`}
+      className={`${cls} flex shrink-0 items-center justify-center font-display font-bold text-ink`}
       style={{ background: "linear-gradient(135deg,#f59e0b,#dc2626)" }}
     >
       {initialsOf(person.name)}
@@ -83,243 +93,181 @@ function Avatar({ person, size = "md" }) {
   );
 }
 
-/* ── Social links ── */
-function Socials({ person, size = 14 }) {
+function Socials({ person }) {
+  const links = [
+    person.email && {
+      key: "mail",
+      href: `mailto:${person.email}`,
+      label: `Email ${person.name}`,
+      icon: <Mail size={14} />,
+    },
+    isProfileLink(person.linkedin) && {
+      key: "linkedin",
+      href: person.linkedin,
+      label: `${person.name} on LinkedIn`,
+      icon: <LinkedinIcon size={14} />,
+      external: true,
+    },
+    isProfileLink(person.instagram) && {
+      key: "instagram",
+      href: person.instagram,
+      label: `${person.name} on Instagram`,
+      icon: <InstagramIcon size={14} />,
+      external: true,
+    },
+  ].filter(Boolean);
+
+  if (links.length === 0) return null;
+
   return (
-    <div className="flex items-center justify-center gap-1.5">
-      {person.email && (
+    <div className="mt-5 flex items-center justify-center gap-2">
+      {links.map((link) => (
         <a
-          href={`mailto:${person.email}`}
-          aria-label={`Email ${person.name}`}
-          className="rounded-lg p-2 transition-transform hover:-translate-y-0.5"
-          style={{ background: "rgba(45,212,191,0.12)", color: MEMBER_COLOR }}
+          key={link.key}
+          href={link.href}
+          aria-label={link.label}
+          {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+          className="rounded-full border border-white/10 p-2 text-slate-400 transition-all duration-300 hover:-translate-y-0.5 hover:border-amber/50 hover:text-amber"
         >
-          <Mail size={size} />
+          {link.icon}
         </a>
-      )}
-      {person.linkedin && (
-        <a
-          href={person.linkedin}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={`${person.name} on LinkedIn`}
-          className="rounded-lg p-2 transition-transform hover:-translate-y-0.5"
-          style={{ background: "rgba(59,130,246,0.12)", color: "#60a5fa" }}
-        >
-          <LinkedinIcon size={size} />
-        </a>
-      )}
-      {person.instagram && (
-        <a
-          href={person.instagram}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={`${person.name} on Instagram`}
-          className="rounded-lg p-2 transition-transform hover:-translate-y-0.5"
-          style={{ background: "rgba(236,72,153,0.12)", color: "#f472b6" }}
-        >
-          <InstagramIcon size={size} />
-        </a>
-      )}
+      ))}
     </div>
   );
 }
 
-/* ── Tier divider badge ── */
-function TierBadge({ label, icon: Icon, color }) {
+function TierLabel({ children }) {
   return (
-    <div className="mb-8 flex items-center justify-center gap-3">
-      <div
-        className="h-px flex-1"
-        style={{ background: `linear-gradient(to right, transparent, ${color}66)` }}
-      />
-      <div
-        className="flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-widest"
-        style={{ background: `${color}1a`, color, border: `1px solid ${color}55` }}
-      >
-        <Icon size={12} />
-        {label}
+    <Reveal>
+      <div className="mb-8 flex items-center gap-5">
+        <h2 className="eyebrow whitespace-nowrap">{children}</h2>
+        <span className="h-px flex-1 bg-gradient-to-r from-white/15 to-transparent" />
       </div>
-      <div
-        className="h-px flex-1"
-        style={{ background: `linear-gradient(to left, transparent, ${color}66)` }}
-      />
-    </div>
-  );
-}
-
-/* ── Overall Coordinator card (top tier) ── */
-function CoordinatorCard({ person, index }) {
-  return (
-    <motion.article
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.1 }}
-      whileHover={{ y: -8 }}
-      className="glass-strong relative mx-auto w-full max-w-sm overflow-hidden rounded-3xl p-10 text-center"
-    >
-      <div className="relative mx-auto mb-5 inline-flex">
-        <div
-          className="rounded-2xl"
-          style={{ boxShadow: `0 0 0 3px ${COORDINATOR_COLOR}, 0 0 0 6px rgba(245,158,11,0.2)` }}
-        >
-          <Avatar person={person} size="xl" />
-        </div>
-      </div>
-
-      <div
-        className="mb-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold"
-        style={{
-          background: "linear-gradient(135deg, rgba(245,158,11,0.2), rgba(220,38,38,0.15))",
-          color: COORDINATOR_COLOR,
-          border: `1px solid ${COORDINATOR_COLOR}59`,
-        }}
-      >
-        <Crown size={11} /> {person.title}
-      </div>
-
-      <h3 className="font-display text-2xl font-black text-chalk">{person.name}</h3>
-      {person.phone && <p className="mt-1 text-xs text-slate-400">{person.phone}</p>}
-
-      <div className="mt-4 flex justify-center">
-        <Socials person={person} size={15} />
-      </div>
-    </motion.article>
-  );
-}
-
-/* ── Head card (middle tier) ── */
-function HeadCard({ person, index }) {
-  return (
-    <motion.article
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.06 }}
-      whileHover={{ y: -6 }}
-      className="glass-strong relative overflow-hidden rounded-2xl p-7 text-center"
-    >
-      <div className="mb-4 flex justify-center">
-        <div
-          className="rounded-xl"
-          style={{ boxShadow: `0 0 0 2px ${HEAD_COLOR}, 0 0 0 4px rgba(220,38,38,0.18)` }}
-        >
-          <Avatar person={person} size="lg" />
-        </div>
-      </div>
-
-      <h3 className="font-display text-lg font-black text-chalk">{person.name}</h3>
-
-      <div className="mt-2 flex justify-center">
-        <span
-          className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-bold"
-          style={{
-            background: "rgba(220,38,38,0.12)",
-            color: "#f87171",
-            border: `1px solid ${HEAD_COLOR}4d`,
-          }}
-        >
-          <Star size={10} /> {person.role}
-        </span>
-      </div>
-
-      {person.roll && <p className="mt-2 text-xs text-slate-400">{person.roll}</p>}
-
-      <div className="mt-3 flex justify-center">
-        <Socials person={person} size={13} />
-      </div>
-    </motion.article>
-  );
-}
-
-/* ── Member card (bottom tier) ── */
-function MemberCard({ person, index }) {
-  return (
-    <motion.article
-      initial={{ opacity: 0, scale: 0.95 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.04 }}
-      whileHover={{ scale: 1.04, y: -2 }}
-      className="glass relative rounded-xl p-4 text-center"
-    >
-      <div className="mx-auto mb-3 w-fit">
-        <Avatar person={person} size="sm" />
-      </div>
-      <p className="text-xs font-semibold text-chalk">{person.name}</p>
-      {person.roll && <p className="mt-0.5 text-[10px] text-slate-500">{person.roll}</p>}
-      {person.domains?.length > 0 && (
-        <p className="mt-1 text-[9px] font-medium text-mint">{person.domains.join(" · ")}</p>
-      )}
-      <div className="mt-2 flex justify-center">
-        <Socials person={person} size={12} />
-      </div>
-    </motion.article>
+    </Reveal>
   );
 }
 
 export default function Team() {
   return (
-    <div className="min-h-screen px-6 pb-24 pt-24">
-      <div className="mx-auto max-w-6xl">
-        <motion.header
-          initial={{ opacity: 0, y: 30 }}
+    <div className="container-x pb-32 pt-32 sm:pt-44">
+      <header className="max-w-3xl">
+        <motion.p
+          className="eyebrow"
+          initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-20 text-center"
+          transition={{ duration: 0.6, delay: 0.45, ease: EASE }}
         >
-          <span className="text-xs font-semibold uppercase tracking-[0.3em] text-amber">
-            The People
-          </span>
-          <h1 className="mb-4 mt-4 font-display text-5xl font-black text-chalk md:text-7xl">
-            Our <span className="text-mint">Team</span>
-          </h1>
-          <p className="mx-auto max-w-lg leading-relaxed text-slate-400">
-            Meet the people behind RIC 2027 — from the overall coordinators to every head and the
-            teams working under them.
-          </p>
-        </motion.header>
+          The People
+        </motion.p>
+        <SplitText
+          as="h1"
+          className="mt-5 font-display text-5xl font-bold leading-[1.02] tracking-tight text-chalk sm:text-7xl"
+          text="Our Team"
+          accent={["Team"]}
+          animateOnMount
+          delay={0.55}
+        />
+        <motion.p
+          className="mt-8 max-w-xl text-lg leading-relaxed text-slate-400"
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.95, ease: EASE }}
+        >
+          The people behind RIC 2027.
+        </motion.p>
+      </header>
 
-        {/* Tier 1 — Overall Coordinators */}
-        <TierBadge label="Overall Coordinators" icon={Crown} color={COORDINATOR_COLOR} />
-        <div className="mb-16 grid grid-cols-1 gap-6 sm:grid-cols-2">
-          {OVERALL_COORDINATORS.map((person, i) => (
-            <CoordinatorCard key={person.id} person={person} index={i} />
+      {/* Overall Coordinators */}
+      <section className="mt-24">
+        <TierLabel>Overall Coordinators</TierLabel>
+        <div className="grid gap-5 sm:grid-cols-2">
+          {OVERALL_COORDINATORS.map((person, index) => (
+            <Reveal key={person.id} delay={index * 0.08}>
+              <SpotlightCard className="rounded-3xl border border-white/10 bg-white/[0.03] p-8 text-center transition-colors duration-500 hover:border-amber/40">
+                <div className="mx-auto mb-6 w-fit">
+                  <Avatar person={person} size="xl" />
+                </div>
+                <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-amber">
+                  {person.title}
+                </p>
+                <h3 className="mt-3 font-display text-2xl font-bold text-chalk">{person.name}</h3>
+                {person.phone && (
+                  <a
+                    href={`tel:${person.phone}`}
+                    className="mt-2 inline-block text-sm text-slate-400 transition-colors hover:text-amber"
+                  >
+                    {person.phone}
+                  </a>
+                )}
+                <Socials person={person} />
+              </SpotlightCard>
+            </Reveal>
           ))}
         </div>
+      </section>
 
-        {/* Tier 2 — Heads */}
-        <TierBadge label="Heads" icon={Star} color={HEAD_COLOR} />
-        <div className="mb-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {HEADS.map((person, i) => (
-            <HeadCard key={person.id} person={person} index={i} />
+      {/* Heads */}
+      <section className="mt-24">
+        <TierLabel>Heads</TierLabel>
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {HEADS.map((person, index) => (
+            <Reveal key={person.id} delay={(index % 3) * 0.07}>
+              <SpotlightCard
+                color="45,212,191"
+                className="h-full rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition-colors duration-500 hover:border-mint/40"
+              >
+                <div className="flex items-center gap-4">
+                  <Avatar person={person} size="lg" />
+                  <div className="min-w-0">
+                    <h3 className="font-display text-lg font-semibold leading-snug text-chalk">
+                      {person.name}
+                    </h3>
+                    <p className="mt-1 text-sm text-mint">{person.role}</p>
+                    {person.roll && <p className="mt-1 text-xs text-slate-500">{person.roll}</p>}
+                  </div>
+                </div>
+                <Socials person={person} />
+              </SpotlightCard>
+            </Reveal>
           ))}
         </div>
+      </section>
 
-        {/* Tier 3 — Teams under each head */}
-        <TierBadge label="Teams" icon={Users} color={MEMBER_COLOR} />
-        <div className="space-y-10">
+      {/* Teams */}
+      <section className="mt-24">
+        <TierLabel>Teams</TierLabel>
+        <div className="space-y-12">
           {HEADS.map((head) => (
-            <section key={head.id}>
-              <div className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-1">
-                <span className="font-display text-sm font-bold uppercase tracking-widest text-mint">
+            <div key={head.id}>
+              <Reveal>
+                <h3 className="mb-5 font-display text-sm font-semibold uppercase tracking-[0.18em] text-amber">
                   {head.domain}
-                </span>
-                   </div>
+                </h3>
+              </Reveal>
 
               {head.team.length > 0 ? (
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
                   {head.team.map((member, i) => (
-                    <MemberCard key={`${head.id}-${member.name}-${i}`} person={member} index={i} />
+                    <Reveal key={`${head.id}-${member.name}-${i}`} delay={(i % 6) * 0.05} y={16}>
+                      <SpotlightCard
+                        color="45,212,191"
+                        className="h-full rounded-xl border border-white/10 bg-white/[0.03] p-4 text-center transition-colors duration-500 hover:border-mint/40"
+                      >
+                        <div className="mx-auto mb-3 w-fit">
+                          <Avatar person={member} size="sm" />
+                        </div>
+                        <p className="text-sm font-medium leading-snug text-chalk">{member.name}</p>
+                      </SpotlightCard>
+                    </Reveal>
                   ))}
                 </div>
               ) : (
                 <p className="text-sm italic text-slate-500">Team members to be added.</p>
               )}
-            </section>
+            </div>
           ))}
         </div>
-      </div>
+      </section>
     </div>
   );
 }
