@@ -96,11 +96,19 @@ export default function Contact() {
           <h2 className="font-display text-lg font-semibold text-chalk">Reach us directly</h2>
           <ul className="space-y-3 text-sm text-slate-400">
             <li>
-              <span className="font-medium text-chalk">Email:</span> {SITE.email}
+              <span className="font-medium text-chalk">Email:</span>{" "}
+              <a href={`mailto:${SITE.email}`} className="transition-colors hover:text-amber">
+                {SITE.email}
+              </a>
             </li>
-            <li>
-              <span className="font-medium text-chalk">Phone:</span> {SITE.phone}
-            </li>
+            {SITE.contacts.map((contact) => (
+              <li key={contact.phone}>
+                <span className="font-medium text-chalk">{contact.role}:</span> {contact.name} —{" "}
+                <a href={`tel:${contact.phone}`} className="transition-colors hover:text-amber">
+                  {contact.phone}
+                </a>
+              </li>
+            ))}
             <li>
               <span className="font-medium text-chalk">Address:</span> {SITE.address}
             </li>

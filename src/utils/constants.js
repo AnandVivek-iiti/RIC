@@ -1,12 +1,17 @@
 export const SITE = {
   name: "RIC",
-  fullName: "RIC",
+  fullName: "Research and Industrial Conclave",
+  year: "2027",
   theme: "Chasing Tangents",
   tagline: "From broken logic to brilliant horizons",
   genre: "Abstract",
-  email: "contact@ric.example.com",
-  phone: "+91 00000 00000",
-  address: "Indian Institute of Technology, India",
+  email: "ric@iiti.ac.in",
+  phone: "+91-7417201863",
+  address: "Indian Institute of Technology Indore, Khandwa Road, Simrol, Indore, Madhya Pradesh 453552",
+  contacts: [
+    { role: "Overall Coordinator — PG", name: "Shaikh Ubaid Ahmed", phone: "+91-7417201863" },
+    { role: "Overall Coordinator — UG", name: "Mahi Maheshwari", phone: "+91-9340676118" },
+  ],
   social: {
     github: "https://github.com",
     linkedin: "https://www.linkedin.com",

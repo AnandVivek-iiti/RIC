@@ -10,7 +10,10 @@ export default function Footer() {
             <img src="/logo.png" alt={`${SITE.name} logo`} className="h-7 w-7 object-contain" />
             {SITE.name}
           </h3>
-          <p className="mt-3 text-sm font-medium text-amber">{SITE.theme}</p>
+          <p className="mt-3 text-sm font-medium text-chalk">
+            {SITE.fullName} {SITE.year}
+          </p>
+          <p className="mt-1 text-sm font-medium text-amber">{SITE.theme}</p>
           <p className="mt-1 text-sm text-slate-400">{SITE.tagline}</p>
         </div>
 
@@ -30,15 +33,25 @@ export default function Footer() {
         <div>
           <h4 className="text-sm font-semibold uppercase tracking-wide text-mint">Contact</h4>
           <ul className="mt-3 space-y-2 text-sm text-slate-400">
-            <li>{SITE.email}</li>
-            <li>{SITE.phone}</li>
+            <li>
+              <a href={`mailto:${SITE.email}`} className="transition-colors hover:text-amber">
+                {SITE.email}
+              </a>
+            </li>
+            {SITE.contacts.map((contact) => (
+              <li key={contact.phone}>
+                <a href={`tel:${contact.phone}`} className="transition-colors hover:text-amber">
+                  {contact.name} — {contact.phone}
+                </a>
+              </li>
+            ))}
             <li>{SITE.address}</li>
           </ul>
         </div>
       </div>
 
       <div className="border-t border-mint/10 py-4 text-center text-xs text-slate-500">
-        © {new Date().getFullYear()} {SITE.name} — {SITE.tagline}
+        © {new Date().getFullYear()} {SITE.name} · {SITE.fullName} {SITE.year} — {SITE.tagline}
       </div>
     </footer>
   );

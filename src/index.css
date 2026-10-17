@@ -23,6 +23,22 @@
   }
 }
 
+@layer components {
+  .glass {
+    background: rgba(49, 46, 129, 0.3);
+    border: 1px solid rgba(45, 212, 191, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .glass-strong {
+    background: rgba(49, 46, 129, 0.48);
+    border: 1px solid rgba(45, 212, 191, 0.22);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+}
+
 @layer utilities {
   /* Blueprint / chalkboard grid overlay */
   .bg-blueprint {
