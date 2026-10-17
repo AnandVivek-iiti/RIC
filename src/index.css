@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #1e1b4b;
+    font-family: Inter, system-ui, -apple-system, sans-serif;
+    color: #e2e8f0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: #f59e0b;
+    color: #1e1b4b;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: "Space Grotesk", system-ui, sans-serif;
+  }
+}
+
+@layer utilities {
+  /* Blueprint / chalkboard grid overlay */
+  .bg-blueprint {
+    background-image:
+      linear-gradient(rgba(94, 234, 212, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(94, 234, 212, 0.07) 1px, transparent 1px);
+    background-size: 34px 34px;
+  }
+
+  /* Outlined "broken logic" headline text */
+  .text-outline {
+    -webkit-text-stroke: 1.5px #f59e0b;
+    color: transparent;
+  }
+}
