@@ -38,7 +38,7 @@ session (skipped under `prefers-reduced-motion`), then the mark flies into the h
 equations with sudden branches, circuit paths curving unpredictably, macroscopic
 crystallization, multi-layered overlay diagrams.
 
-Fonts: 8 switchable sets (header **Font test** dropdown, saved in `localStorage`). Data in
+Fonts: 8 switchable sets (**Font test** swatches in the footer, saved in `localStorage`). Data in
 `src/data/fontSets.js`, UI in `components/common/FontSwitcher`, one Google Fonts request in
 `index.html`. Tailwind: `font-display` (headings), `font-sub`, `font-body`, `font-mono` (labels).
 

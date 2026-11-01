@@ -89,7 +89,7 @@ function StatsStrip() {
 function ResourceList({ title, items }) {
   return (
     <div>
-      <p className="eyebrow !text-lg sm:!text-2xl">{title}</p>
+      <p className="eyebrow home-heading">{title}</p>
       <ul className="mt-6 border-t border-chalk/10">
         {items.map((item) => (
           <li
@@ -173,14 +173,14 @@ export default function Home() {
         <Reveal delay={0.1} className="mt-10">
           <Link
             to="/about"
-            className="inline-flex items-center gap-2 py-2 text-sm font-semibold text-mint-light transition-colors hover:text-amber"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-mint-light transition-colors hover:text-amber"
           >
             Read the manifesto
             <ArrowUpRight aria-hidden="true" className="h-4 w-4" />
           </Link>
         </Reveal>
 
-        <div className="mt-20 grid grid-cols-1 gap-14 md:grid-cols-2">
+        <div className="mt-20 grid gap-14 md:grid-cols-2 text-3xl sm:text-4xl">
           <Reveal>
             <ResourceList title="Resources" items={RESOURCES} />
           </Reveal>
@@ -206,7 +206,7 @@ export default function Home() {
 
       {/* Programme */}
       <section className="container-x pb-20 sm:pb-28">
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+        <div className="grid gap-5 md:grid-cols-2">
           {programme.map((item, i) => {
             const Icon = item.icon;
             return (
@@ -250,7 +250,7 @@ export default function Home() {
           </p>
         </Reveal>
 
-        <Reveal delay={0.2} className="mt-12 grid grid-cols-1 gap-8 border-t border-chalk/10 pt-8 sm:grid-cols-2">
+        <Reveal delay={0.2} className="mt-12 grid gap-8 border-t border-chalk/10 pt-8 sm:grid-cols-2">
           {partnerGroups.length > 0 ? (
             partnerGroups.map((group) => (
               <div key={group.label}>
