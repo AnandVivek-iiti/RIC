@@ -16,6 +16,9 @@
 }
 
 .hero-tangent {
+  /* the gradient only paints inside the element's box: extend it below the baseline so descenders (g, y, p) are not cut */
+  padding-bottom: 0.3em;
+  margin-bottom: -0.3em;
   background-image: linear-gradient(
     90deg,
     rgb(var(--c-amber)),

@@ -40,11 +40,11 @@ export default function SplitText({
     <Tag ref={ref} className={className} aria-label={text}>
       {words.map((word, i) => (
         <span key={i} aria-hidden="true">
-          <span className="-mb-[0.14em] inline-block overflow-hidden pb-[0.14em] align-bottom">
+          <span className="-mb-[0.3em] inline-block overflow-hidden pb-[0.3em] align-bottom">
             <motion.span
               className={`inline-block ${isAccent(word, i) ? accentClass : ""}`}
-              initial={{ y: "112%" }}
-              animate={{ y: shown ? 0 : "112%" }}
+              initial={{ y: "140%" }}
+              animate={{ y: shown ? 0 : "140%" }}
               transition={{ duration: 0.9, delay: delay + i * stagger, ease: EASE }}
             >
               {word}
