@@ -104,9 +104,9 @@ export default function TangentCurve({ className = "" }) {
       <svg viewBox={`0 0 ${W} ${H}`} className="h-full w-full overflow-visible">
         <defs>
           <linearGradient id="tangent-curve-gradient" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#f59e0b" />
-            <stop offset="55%" stopColor="#dc2626" />
-            <stop offset="100%" stopColor="#2dd4bf" />
+            <stop offset="0%" style={{ stopColor: "rgb(var(--c-cyan))" }} />
+            <stop offset="55%" style={{ stopColor: "rgb(var(--c-blue-light))" }} />
+            <stop offset="100%" style={{ stopColor: "rgb(var(--c-titanium))" }} />
           </linearGradient>
         </defs>
 
@@ -119,7 +119,7 @@ export default function TangentCurve({ className = "" }) {
               y1={t.y1}
               x2={t.x2}
               y2={t.y2}
-              stroke="#5eead4"
+              style={{ stroke: "rgb(var(--c-titanium))" }}
               strokeOpacity="0.3"
               strokeWidth="1"
               strokeLinecap="round"
@@ -147,18 +147,25 @@ export default function TangentCurve({ className = "" }) {
           y1={first.y1}
           x2={first.x2}
           y2={first.y2}
-          stroke="#f59e0b"
+          style={{ stroke: "rgb(var(--c-cyan))" }}
           strokeWidth="1.5"
           strokeLinecap="round"
         />
-        <circle ref={ringRef} cx={START_X} cy={f(START_X)} r="15" fill="none" stroke="#2dd4bf" strokeOpacity="0.55" />
+        <circle
+          ref={ringRef}
+          cx={START_X}
+          cy={f(START_X)}
+          r="15"
+          fill="none"
+          style={{ stroke: "rgb(var(--c-titanium))" }}
+          strokeOpacity="0.55"
+        />
         <circle
           ref={dotRef}
           cx={START_X}
           cy={f(START_X)}
           r="5"
-          fill="#f59e0b"
-          style={{ filter: "drop-shadow(0 0 8px rgba(245, 158, 11, 0.9))" }}
+          style={{ fill: "rgb(var(--c-cyan))", filter: "drop-shadow(0 0 5px rgb(var(--c-cyan) / 0.5))" }}
         />
       </svg>
     </div>

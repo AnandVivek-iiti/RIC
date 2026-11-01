@@ -11,20 +11,36 @@ than errors to erase, and unites four streams into one engine of lateral
 transformation: **Core Research**, **Digital Exploration**, **Systemic Design** and
 **Speculative Thinking**.
 
-**Colour palette** (see `tailwind.config.js`):
+**Colour palette** — "Prismatic Glassmorphism & Iridescence (Refraction & Divergence)". Hexes live
+once, as RGB channels, in `src/index.css` (`:root`); `tailwind.config.js` maps them to the same
+token names as before, so existing classes (`bg-ink`, `text-mint`, …) still work:
 
-| Token     | Role                       | Hex       |
-| --------- | -------------------------- | --------- |
-| `ink`     | Deep Indigo — chalkboard   | `#1E1B4B` |
-| `amber`   | Amber — primary glow       | `#F59E0B` |
-| `crimson` | Crimson — the rupture      | `#DC2626` |
-| `mint`    | Erratic Mint — the detour  | `#2DD4BF` |
+| Token      | Role                                   | Hex       |
+| ---------- | -------------------------------------- | --------- |
+| `ink`      | Midnight Teal — the stage              | `#062B32` |
+| `prism`    | Prismatic Blue (new)                   | `#245CFF` |
+| `mint`     | Iridescent Cyan — labels, hover        | `#36E5E8` |
+| `amber`    | Refraction Amber — warm light          | `#FFC878` |
+| `crimson`  | Spectral Coral — red end of the split  | `#FF6A72` |
+| `chalk`    | Soft Lavender Pearl — text             | `#ECEAF6` |
+| `titanium` / `chrome` / `magenta` | glass neutrals / rare accent | `#A7B0BA` / `#D5DCE6` / `#D64FC8` |
+
+Lighting rule: light travels left → right and dips slightly downward. Glass highlights sit on the
+top/left edges; spectral colour appears only at exit edges (lower/right) and in the hero beam.
+
+**Logo:** `src/components/common/Logo` renders the RIC mark as inline SVG
+(`variant="nav"` for Navbar/Footer, `"hero"` for the Home hero, `"preload"` for the intro). Facets
+are drawn as outlines, assembled and filled. `Preloader` plays the assembly full-screen once per
+session (skipped under `prefers-reduced-motion`), then the mark flies into the hero, where
+`PrismBeam` draws the beam that enters, bends and splits.
 
 **Vision board motifs:** scattered blueprints, fractured light prisms, chalkboard
 equations with sudden branches, circuit paths curving unpredictably, macroscopic
 crystallization, multi-layered overlay diagrams.
 
-Fonts: **Space Grotesk** (display) + **Inter** (body).
+Fonts: 8 switchable sets (header **Font test** dropdown, saved in `localStorage`). Data in
+`src/data/fontSets.js`, UI in `components/common/FontSwitcher`, one Google Fonts request in
+`index.html`. Tailwind: `font-display` (headings), `font-sub`, `font-body`, `font-mono` (labels).
 
 ## Tech Stack
 
@@ -61,7 +77,8 @@ RIC/
 │   │   ├── common/
 │   │   │   ├── Navbar/        Navbar.jsx
 │   │   │   ├── Footer/        Footer.jsx
-│   │   │   └── Button/        Button.jsx
+│   │   │   ├── Button/        Button.jsx
+│   │   │   └── Logo/          Logo.jsx + logoShards.js
 │   │   └── home/              Hero.jsx + Hero.css
 │   ├── pages/
 │   │   ├── Home/              Home.jsx + Home.css

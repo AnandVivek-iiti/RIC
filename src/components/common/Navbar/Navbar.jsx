@@ -3,6 +3,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { NAV_LINKS, SITE } from "../../../utils/constants";
 import Logo from "../Logo/Logo";
+import FontSwitcher from "../FontSwitcher/FontSwitcher";
 
 const EASE = [0.22, 1, 0.36, 1];
 
@@ -31,16 +32,19 @@ export default function Navbar() {
     <header className="fixed inset-x-0 top-0 z-50 flex justify-center px-3 pt-3 sm:pt-4">
       <motion.nav
         initial={{ y: -60, opacity: 0 }}
-        animate={{ y: 0, opacity: 1, maxWidth: scrolled ? 780 : 1152 }}
+        animate={{ y: 0, opacity: 1, maxWidth: scrolled ? 980 : 1152 }}
         transition={{ duration: 0.7, ease: EASE, delay: 0.2 }}
-        className={`relative z-50 flex h-14 w-full items-center justify-between rounded-full border px-3 pl-5 transition-[background-color,border-color,backdrop-filter] duration-500 ${
-          scrolled || open
-            ? "border-chalk/10 bg-ink-deep/70 backdrop-blur-xl"
-            : "border-transparent bg-transparent"
-        }`}
+        className="relative z-50 flex h-14 w-full items-center justify-between rounded-full px-3 pl-5"
       >
+        {/* frosted-glass pill: fades in once the page scrolls or the menu opens */}
+        <span
+          aria-hidden="true"
+          className={`glass-nav pointer-events-none absolute inset-0 -z-10 rounded-full transition-opacity duration-500 ${
+            scrolled || open ? "opacity-100" : "opacity-0"
+          }`}
+        />
         <NavLink to="/" className="flex items-center gap-2.5" aria-label={`${SITE.name} home`}>
-          <Logo className="h-7 w-7" />
+          <Logo className="h-8 w-[2.4rem]" />
           <span className="font-display text-lg font-bold tracking-tight text-chalk">
             {SITE.name}
             <span className="text-amber">.</span>
@@ -53,7 +57,7 @@ export default function Navbar() {
               <NavLink
                 to={link.to}
                 end={link.to === "/"}
-                className="relative block rounded-full px-4 py-2 text-sm font-medium"
+                className="relative block whitespace-nowrap rounded-full px-3 py-2 text-sm font-medium lg:px-4"
               >
                 {({ isActive }) => (
                   <>
@@ -77,6 +81,11 @@ export default function Navbar() {
             </li>
           ))}
         </ul>
+
+        {/* Font test — temporary type switcher (see data/fontSets.js) */}
+        <div className="hidden md:block">
+          <FontSwitcher />
+        </div>
 
         <button
           type="button"
@@ -135,7 +144,10 @@ export default function Navbar() {
                 </motion.li>
               ))}
             </ul>
-            <p className="mt-12 text-xs uppercase tracking-[0.25em] text-slate-500">
+            <div className="mt-10">
+              <FontSwitcher variant="menu" />
+            </div>
+            <p className="mt-10 font-mono text-xs uppercase tracking-[0.25em] text-slate-500">
               {SITE.fullName} {SITE.year}
             </p>
           </motion.div>

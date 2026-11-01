@@ -42,7 +42,7 @@ export default function Marquee({ items = [], speed = -2.2 }) {
   return (
     <div
       aria-hidden="true"
-      className="overflow-hidden border-y border-white/10 py-6"
+      className="overflow-hidden border-y border-chalk/10 py-6"
       style={{ WebkitMaskImage: "linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent)", maskImage: "linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent)" }}
     >
       <motion.div className="flex w-max whitespace-nowrap" style={{ x }}>
@@ -51,8 +51,8 @@ export default function Marquee({ items = [], speed = -2.2 }) {
             key={`${item}-${index}`}
             className="flex items-center gap-8 pr-8 font-display text-4xl font-bold uppercase tracking-tight sm:text-6xl"
             style={{
-              WebkitTextStroke: "1px rgba(237, 233, 254, 0.35)",
-              color: index % 2 === 0 ? "transparent" : "rgba(237, 233, 254, 0.9)",
+              WebkitTextStroke: "1px rgb(var(--c-pearl) / 0.35)",
+              color: index % 2 === 0 ? "transparent" : "rgb(var(--c-pearl) / 0.9)",
             }}
           >
             {item}

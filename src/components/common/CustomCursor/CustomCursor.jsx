@@ -70,7 +70,8 @@ export default function CustomCursor() {
         animate={{
           opacity: visible ? 1 : 0,
           scale: pressed ? 0.8 : hovering ? 1.7 : 1,
-          backgroundColor: hovering ? "rgba(245, 158, 11, 0.14)" : "rgba(245, 158, 11, 0)",
+          // Refraction Amber (#FFC878) as literals: framer cannot tween CSS variables
+          backgroundColor: hovering ? "rgba(255, 200, 120, 0.14)" : "rgba(255, 200, 120, 0)",
         }}
         transition={{ type: "spring", stiffness: 280, damping: 22 }}
       />

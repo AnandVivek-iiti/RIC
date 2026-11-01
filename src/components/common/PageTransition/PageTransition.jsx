@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
 const EASE = [0.76, 0, 0.24, 1];
@@ -25,6 +26,11 @@ const curtain = {
 
 export default function PageTransition({ routeKey, children }) {
   const reduce = useReducedMotion();
+  // The full-screen intro already opened the site: skip the curtain on the very first page only
+  const skipFirstCurtain = useRef(document.documentElement.dataset.introPlayed === "1");
+  useEffect(() => {
+    skipFirstCurtain.current = false;
+  }, []);
 
   if (reduce) return <div key={routeKey}>{children}</div>;
 
@@ -33,7 +39,13 @@ export default function PageTransition({ routeKey, children }) {
       mode="wait"
       onExitComplete={() => window.scrollTo({ top: 0, behavior: "instant" })}
     >
-      <motion.div key={routeKey} variants={page} initial="initial" animate="enter" exit="exit">
+      <motion.div
+        key={routeKey}
+        variants={page}
+        initial={skipFirstCurtain.current ? false : "initial"}
+        animate="enter"
+        exit="exit"
+      >
         {children}
         <motion.div
           aria-hidden="true"

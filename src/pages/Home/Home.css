@@ -1,4 +1,4 @@
-/* Closing call-to-action glow */
+/* Closing call-to-action: a cool pool of light at the base, warm only at its far edge */
 .home-cta {
   position: relative;
   isolation: isolate;
@@ -11,13 +11,13 @@
   z-index: -1;
   background: radial-gradient(
     55% 70% at 50% 100%,
-    rgba(245, 158, 11, 0.16),
-    rgba(45, 212, 191, 0.06) 45%,
+    rgb(var(--c-blue) / 0.16),
+    rgb(var(--c-cyan) / 0.05) 45%,
     transparent 70%
   );
 }
 
-/* Resource rows: amber sweep on hover */
+/* Resource rows: a light line sweeps in on hover and splits only at its far end */
 .home-row {
   position: relative;
   overflow: hidden;
@@ -30,7 +30,13 @@
   bottom: 0;
   height: 1px;
   width: 100%;
-  background: linear-gradient(90deg, #f59e0b, #2dd4bf);
+  background: linear-gradient(
+    90deg,
+    rgb(var(--c-pearl) / 0.8),
+    rgb(var(--c-cyan)) 70%,
+    rgb(var(--c-amber)) 92%,
+    rgb(var(--c-coral))
+  );
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
@@ -38,4 +44,22 @@
 
 .home-row:hover::after {
   transform: scaleX(1);
+}
+
+/* Closing panel: a single beam crosses the glass from the upper left; spectral only at its far end */
+.home-cta__beam {
+  position: absolute;
+  left: -10%;
+  top: 0;
+  width: 120%;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(var(--c-pearl) / 0.55) 25%,
+    rgb(var(--c-cyan) / 0.7) 70%,
+    rgb(var(--c-amber) / 0.7) 88%,
+    transparent
+  );
 }

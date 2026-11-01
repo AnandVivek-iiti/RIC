@@ -14,7 +14,7 @@ function TimelineItem({ item }) {
     >
       <span
         aria-hidden="true"
-        className="absolute -left-10 top-[0.6rem] h-[13px] w-[13px] rounded-full border border-amber bg-ink"
+        className="absolute -left-10 top-[0.6rem] h-[13px] w-[13px] rounded-full border border-mint bg-ink"
       />
       <div>
         <p className="font-display text-xl font-semibold text-chalk sm:text-2xl">{item.title}</p>
@@ -33,10 +33,10 @@ export default function Timeline({ items = [] }) {
 
   return (
     <div ref={ref} className="relative pl-10">
-      <span aria-hidden="true" className="absolute bottom-2 left-[6px] top-2 w-px bg-white/10" />
+      <span aria-hidden="true" className="absolute bottom-2 left-[6px] top-2 w-px bg-chalk/10" />
       <motion.span
         aria-hidden="true"
-        className="absolute bottom-2 left-[6px] top-2 w-px origin-top bg-gradient-to-b from-amber via-crimson to-mint"
+        className="absolute bottom-2 left-[6px] top-2 w-px origin-top bg-gradient-to-b from-mint to-prism-light"
         style={{ scaleY }}
       />
       <ol className="space-y-12">

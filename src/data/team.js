@@ -114,18 +114,6 @@ export const HEADS = [
     ],
   },
   {
-    id: "logistics",
-    role: "Logistics Head",
-    domain: "Logistics",
-    name: "Madhur Mohan Mittal",
-    roll: "250002036",
-    photo: "",
-    email: "",
-    linkedin: DEFAULT_LINKEDIN,
-    instagram: DEFAULT_INSTAGRAM,
-    team: [],
-  },
-  {
     id: "creatives",
     role: "Creatives & Social Media Head",
     domain: "Creatives",
@@ -136,7 +124,7 @@ export const HEADS = [
     linkedin: DEFAULT_LINKEDIN,
     instagram: DEFAULT_INSTAGRAM,
     team: [
-      member("Devanaboina Swathi", "CHE250008011", ["Creatives"]),
+      member("Devanaboina Swathi", "CHE250008011", ["Creatives"],"https://www.linkedin.com"),
       member("Vedika Vishwakarma", "CE250004050", ["Creatives"]),
       member("Aaradhya Bhardwaj", "CE260004001", ["Creatives", "Events"]),
       member("Anubathula karthik", "CHE260008007", ["Creatives", "Events"]),
@@ -156,3 +144,16 @@ export const HEADS = [
     team: [member("Aditya Singh", "MEMS260005004", ["Marketing"])],
   },
 ];
+
+/* Counts derived from the data above, so they follow any change to it */
+const rollOf = (person) => person.roll || person.name;
+
+export const TEAM_COUNTS = (() => {
+  const members = new Set();
+  HEADS.forEach((head) => head.team.forEach((person) => members.add(rollOf(person))));
+  return {
+    coordinators: OVERALL_COORDINATORS.length,
+    heads: HEADS.length,
+    members: members.size,
+  };
+})();

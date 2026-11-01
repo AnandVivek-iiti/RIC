@@ -1,18 +1,23 @@
-import { useRef, useState } from "react";
-import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
-import { Plus } from "lucide-react";
+import { useRef } from "react";
+import { Link } from "react-router-dom";
+import { motion, useScroll, useSpring } from "framer-motion";
+import { ArrowUpRight, Handshake, MessagesSquare } from "lucide-react";
 import Hero from "../../components/home/Hero";
+import FeaturedEvents from "../../components/home/FeaturedEvents";
+import TracksShowcase from "../../components/home/TracksShowcase";
 import Marquee from "../../components/common/Marquee/Marquee";
 import Reveal from "../../components/common/Reveal/Reveal";
 import SplitText from "../../components/common/SplitText/SplitText";
 import ScrollText from "../../components/common/ScrollText/ScrollText";
+import SectionHeader from "../../components/common/SectionHeader/SectionHeader";
+import SectionDivider from "../../components/common/SectionDivider/SectionDivider";
+import GlassCard from "../../components/common/GlassCard/GlassCard";
+import TagChip from "../../components/common/TagChip/TagChip";
 import CountUp from "../../components/common/CountUp/CountUp";
 import Button from "../../components/common/Button/Button";
-import { eventCategories } from "../../data/events";
+import { eventCategories, totalEvents } from "../../data/events";
 import { SITE, TRACKS, IMPORTANT_DATES, PARTNERS, RESOURCES, TEMPLATES } from "../../utils/constants";
 import "./Home.css";
-
-const EASE = [0.22, 1, 0.36, 1];
 
 const marqueeItems = [
   SITE.theme,
@@ -21,21 +26,23 @@ const marqueeItems = [
   `${SITE.name} ${SITE.year}`,
 ];
 
-const totalEvents = eventCategories.reduce((sum, category) => sum + category.events.length, 0);
-
+/* Every figure comes from the data files, except the 16 hours, which is the Zero Day Challenge's length */
 const stats = [
-  { value: TRACKS.length, label: "Tracks" },
-  { value: eventCategories.length, label: "Event categories" },
-  { value: totalEvents, label: "Events" },
+  { value: totalEvents, label: "Events", note: "across five categories" },
+  { value: eventCategories.length, label: "Categories", note: "from workshops to school" },
+  { value: TRACKS.length, label: "Research tracks", note: "one theme, four angles" },
+  { value: 16, label: "Hours", note: "the Zero Day Challenge" },
 ];
 
 const programme = [
   {
+    icon: Handshake,
     title: "Networking",
     tag: "Expand your network",
     text: "Mixers and roundtables that connect collaborators, mentors and industry.",
   },
   {
+    icon: MessagesSquare,
     title: "Panel Discussions",
     tag: "Interactive conversations",
     text: "Researchers, founders and policymakers debate the edges of the theme.",
@@ -51,116 +58,31 @@ const partnerGroups = [
 
 const aboutText = `${SITE.name}’${SITE.year.slice(2)} brings together researchers, builders and industry under one theme: ${SITE.theme}. We treat the detour, the outlier and the half-finished equation as the raw material of the next paradigm.`;
 
-function SectionHead({ eyebrow, title, accent = [] }) {
+/* Four figures in one glass strip */
+function StatsStrip() {
   return (
-    <div>
-      <Reveal y={10}>
-        <p className="eyebrow">{eyebrow}</p>
-      </Reveal>
-      <SplitText
-        text={title}
-        accent={accent}
-        className="mt-6 max-w-3xl text-4xl font-bold leading-[1] tracking-tight text-chalk sm:text-6xl"
-      />
-    </div>
-  );
-}
-
-/* Four tracks as an expanding list */
-function Tracks() {
-  const [open, setOpen] = useState(0);
-
-  return (
-    <ul className="mt-14 divide-y divide-chalk/10 border-y border-chalk/10">
-      {TRACKS.map((track, i) => {
-        const active = open === i;
-        return (
-          <li key={track.name}>
-            <button
-              type="button"
-              onClick={() => setOpen(active ? -1 : i)}
-              aria-expanded={active}
-              className="group flex w-full items-center gap-5 py-7 text-left sm:gap-10 sm:py-9"
+    <section aria-label="RIC'27 at a glance" className="container-x py-16 sm:py-20">
+      <Reveal>
+        <div className="glass grid grid-cols-2 overflow-hidden rounded-3xl lg:grid-cols-4">
+          {stats.map((stat, i) => (
+            <div
+              key={stat.label}
+              className={`p-6 sm:p-8 ${i % 2 === 1 ? "border-l border-chalk/10" : ""} ${
+                i > 1 ? "border-t border-chalk/10 lg:border-t-0" : ""
+              } ${i > 0 ? "lg:border-l lg:border-chalk/10" : ""}`}
             >
-              <span className="font-display text-sm tabular-nums text-mint">0{i + 1}</span>
-              <span
-                className={`flex-1 font-display text-3xl font-semibold tracking-tight transition-all duration-500 ease-expo sm:text-5xl ${
-                  active ? "translate-x-2 text-chalk" : "text-chalk/35 group-hover:text-chalk/70"
-                }`}
-              >
-                {track.name}
-              </span>
-              <motion.span
-                animate={{ rotate: active ? 45 : 0 }}
-                transition={{ duration: 0.4, ease: EASE }}
-                className={`grid h-10 w-10 shrink-0 place-items-center rounded-full border transition-colors duration-300 ${
-                  active ? "border-amber text-amber" : "border-chalk/20 text-chalk/60"
-                }`}
-              >
-                <Plus className="h-4 w-4" />
-              </motion.span>
-            </button>
-
-            <AnimatePresence initial={false}>
-              {active && (
-                <motion.div
-                  key="content"
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.55, ease: EASE }}
-                  className="overflow-hidden"
-                >
-                  <div className="grid gap-6 pb-10 pl-9 sm:grid-cols-2 sm:pl-[4.25rem]">
-                    <p className="max-w-sm leading-relaxed text-slate-400">{track.text}</p>
-                    <ul className="flex flex-wrap content-start gap-2">
-                      {track.topics.map((topic) => (
-                        <li
-                          key={topic}
-                          className="rounded-full border border-amber/25 px-3 py-1 text-xs text-amber-light"
-                        >
-                          {topic}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </li>
-        );
-      })}
-    </ul>
-  );
-}
-
-/* Vertical timeline whose line draws as you scroll */
-function Dates() {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 0.75", "end 0.65"] });
-  const scaleY = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.3 });
-
-  return (
-    <div ref={ref} className="relative mt-14">
-      <div className="absolute bottom-2 left-[7px] top-2 w-px bg-chalk/10" />
-      <motion.div
-        style={{ scaleY }}
-        className="absolute bottom-2 left-[7px] top-2 w-px origin-top bg-gradient-to-b from-amber to-mint"
-      />
-      <ul className="space-y-10">
-        {IMPORTANT_DATES.map((item) => (
-          <Reveal
-            as="li"
-            key={item.label}
-            className="relative flex flex-col gap-1 pl-10 sm:flex-row sm:items-baseline sm:justify-between"
-          >
-            <span className="absolute left-0 top-2 h-[15px] w-[15px] rounded-full border border-amber bg-ink" />
-            <span className="font-display text-xl text-chalk sm:text-2xl">{item.label}</span>
-            <span className="text-sm uppercase tracking-[0.18em] text-amber-light">{item.date}</span>
-          </Reveal>
-        ))}
-      </ul>
-    </div>
+              <p className="font-display text-5xl font-bold tracking-tighter text-chalk sm:text-6xl">
+                <CountUp to={stat.value} />
+              </p>
+              <p className="mt-3 font-mono text-xs uppercase tracking-[0.2em] text-mint-light">
+                {stat.label}
+              </p>
+              <p className="mt-1 text-sm text-slate-400">{stat.note}</p>
+            </div>
+          ))}
+        </div>
+      </Reveal>
+    </section>
   );
 }
 
@@ -174,15 +96,57 @@ function ResourceList({ title, items }) {
             key={item.label}
             className="home-row flex items-center justify-between gap-4 border-b border-chalk/10 py-5"
           >
-            <span className="font-display text-lg text-chalk">{item.label}</span>
-            {item.soon && (
-              <span className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-mint">
-                Coming soon
-              </span>
-            )}
+            <span className="font-sub text-lg text-chalk">{item.label}</span>
+            {item.soon && <TagChip accent="#8CF0F2">Coming soon</TagChip>}
           </li>
         ))}
       </ul>
+    </div>
+  );
+}
+
+/* Vertical timeline whose line draws as you scroll */
+function Dates() {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 0.75", "end 0.65"] });
+  const scaleY = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.3 });
+
+  return (
+    <div ref={ref} className="relative mt-14">
+      <div className="absolute bottom-3 left-[11px] top-3 w-px bg-chalk/10" />
+      <motion.div
+        style={{ scaleY }}
+        className="absolute bottom-3 left-[11px] top-3 w-px origin-top bg-gradient-to-b from-mint to-prism-light"
+      />
+      <ol className="space-y-5">
+        {IMPORTANT_DATES.map((item, i) => {
+          const last = i === IMPORTANT_DATES.length - 1;
+          const tba = /announced/i.test(item.date);
+          return (
+            <Reveal as="li" key={item.label} delay={(i % 3) * 0.05} className="relative pl-12">
+              <span
+                aria-hidden="true"
+                className={`absolute left-0 top-1/2 grid h-[23px] w-[23px] -translate-y-1/2 place-items-center rounded-full border bg-ink ${
+                  last ? "border-amber" : "border-mint"
+                }`}
+              >
+                <span className={`h-2 w-2 rounded-full ${last ? "bg-amber" : "bg-mint"}`} />
+              </span>
+              <div
+                className={`glass flex flex-col gap-3 rounded-2xl px-6 py-5 sm:flex-row sm:items-center sm:justify-between ${
+                  last ? "border-amber/30" : ""
+                }`}
+              >
+                <div className="flex items-baseline gap-4">
+                  <span className="font-mono text-sm tabular-nums text-slate-400">0{i + 1}</span>
+                  <span className="font-sub text-xl text-chalk sm:text-2xl">{item.label}</span>
+                </div>
+                <TagChip accent={tba ? undefined : "#FFC878"}>{item.date}</TagChip>
+              </div>
+            </Reveal>
+          );
+        })}
+      </ol>
     </div>
   );
 }
@@ -194,8 +158,10 @@ export default function Home() {
 
       <Marquee items={marqueeItems} />
 
+      <StatsStrip />
+
       {/* About */}
-      <section id="about" className="container-x scroll-mt-24 py-28 sm:py-40">
+      <section id="about" className="container-x scroll-mt-24 py-20 sm:py-32">
         <Reveal y={10}>
           <p className="eyebrow">About</p>
         </Reveal>
@@ -204,8 +170,17 @@ export default function Home() {
           accent={["chasing", "tangents"]}
           className="mt-8 max-w-4xl font-display text-3xl font-medium leading-[1.2] tracking-tight text-chalk sm:text-5xl"
         />
+        <Reveal delay={0.1} className="mt-10">
+          <Link
+            to="/about"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-mint-light transition-colors hover:text-amber"
+          >
+            Read the manifesto
+            <ArrowUpRight aria-hidden="true" className="h-4 w-4" />
+          </Link>
+        </Reveal>
 
-        <div className="mt-24 grid gap-14 md:grid-cols-2">
+        <div className="mt-20 grid gap-14 md:grid-cols-2 text-3xl sm:text-4xl">
           <Reveal>
             <ResourceList title="Resources" items={RESOURCES} />
           </Reveal>
@@ -215,51 +190,57 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Themes */}
-      <section id="themes" className="container-x scroll-mt-24 py-20 sm:py-28">
-        <SectionHead eyebrow="Themes" title="Four tracks. Pick a tangent." accent={[4]} />
-        <Tracks />
-      </section>
+      <SectionDivider />
 
-      {/* Numbers */}
-      <section className="container-x py-20 sm:py-28">
-        <div className="grid grid-cols-1 divide-y divide-chalk/10 border-y border-chalk/10 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-          {stats.map((stat, i) => (
-            <Reveal key={stat.label} delay={i * 0.1} className="px-0 py-10 sm:px-8 sm:first:pl-0">
-              <p className="font-display text-7xl font-bold tracking-tighter text-chalk sm:text-8xl">
-                <CountUp to={stat.value} />
-              </p>
-              <p className="mt-3 text-xs uppercase tracking-[0.22em] text-slate-400">{stat.label}</p>
-            </Reveal>
-          ))}
-        </div>
+      <FeaturedEvents />
+
+      <SectionDivider />
+
+      {/* Tracks */}
+      <section id="themes" className="container-x scroll-mt-24 py-20 sm:py-28">
+        <SectionHeader eyebrow="Themes" title="Four tracks. Pick a tangent." accent={[4]}>
+          One theme, approached from four directions. Each track follows its own line away from the curve.
+        </SectionHeader>
+        <TracksShowcase />
       </section>
 
       {/* Programme */}
-      <section className="container-x py-20 sm:py-28">
-        <div className="grid gap-px overflow-hidden rounded-3xl border border-chalk/10 bg-chalk/10 md:grid-cols-2">
-          {programme.map((item, i) => (
-            <Reveal key={item.title} delay={i * 0.1} className="bg-ink p-8 sm:p-12">
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-crimson-light">
-                {item.tag}
-              </p>
-              <h3 className="mt-5 font-display text-3xl font-semibold tracking-tight text-chalk">
-                {item.title}
-              </h3>
-              <p className="mt-4 max-w-sm leading-relaxed text-slate-400">{item.text}</p>
-            </Reveal>
-          ))}
+      <section className="container-x pb-20 sm:pb-28">
+        <div className="grid gap-5 md:grid-cols-2">
+          {programme.map((item, i) => {
+            const Icon = item.icon;
+            return (
+              <Reveal key={item.title} delay={i * 0.1}>
+                <GlassCard accent="#FF9096" className="h-full rounded-3xl p-8 sm:p-10">
+                  <div className="flex items-center justify-between gap-4">
+                    <span className="grid h-11 w-11 place-items-center rounded-2xl border border-crimson-light/40 text-crimson-light">
+                      <Icon aria-hidden="true" className="h-5 w-5" />
+                    </span>
+                    <TagChip accent="#FF9096">{item.tag}</TagChip>
+                  </div>
+                  <h3 className="mt-10 font-sub text-3xl font-semibold tracking-tight text-chalk">
+                    {item.title}
+                  </h3>
+                  <p className="mt-4 max-w-sm leading-relaxed text-slate-400">{item.text}</p>
+                </GlassCard>
+              </Reveal>
+            );
+          })}
         </div>
       </section>
 
+      <SectionDivider />
+
       {/* Important dates */}
       <section className="container-x py-20 sm:py-28">
-        <SectionHead eyebrow="Timeline" title="Important dates" />
+        <SectionHeader eyebrow="Timeline" title="Important dates">
+          Dates for each stage will be published here as soon as they are confirmed.
+        </SectionHeader>
         <Dates />
       </section>
 
       {/* Partners */}
-      <section className="container-x py-20 sm:py-28">
+      <section className="container-x pb-20 sm:pb-28">
         <Reveal y={10}>
           <p className="eyebrow">Organised by</p>
         </Reveal>
@@ -273,8 +254,8 @@ export default function Home() {
           {partnerGroups.length > 0 ? (
             partnerGroups.map((group) => (
               <div key={group.label}>
-                <p className="text-xs uppercase tracking-[0.22em] text-slate-500">{group.label}</p>
-                <p className="mt-2 font-display text-lg text-chalk">{group.items.join(" · ")}</p>
+                <p className="font-mono text-xs uppercase tracking-[0.2em] text-slate-400">{group.label}</p>
+                <p className="mt-2 font-sub text-lg text-chalk">{group.items.join(" · ")}</p>
               </div>
             ))
           ) : (
@@ -286,24 +267,33 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section id="register" className="home-cta scroll-mt-24 py-32 text-center sm:py-44">
+      <section id="register" className="home-cta scroll-mt-24 py-24 sm:py-36">
         <div className="container-x">
-          <SplitText
-            text="Take the detour."
-            accent={[2]}
-            className="mx-auto max-w-4xl text-5xl font-bold leading-[0.95] tracking-tight text-chalk sm:text-8xl"
-          />
-          <Reveal delay={0.2}>
-            <p className="mx-auto mt-8 max-w-md text-lg text-slate-400">
-              Registration and submissions open soon. Reach out to join the programme.
-            </p>
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-              <Button to="/contact" arrow>
-                Contact Us
-              </Button>
-              <Button to="/events" variant="ghost">
-                View Events
-              </Button>
+          <Reveal>
+            <div className="glass-strong relative overflow-hidden rounded-[2rem] px-6 py-16 text-center sm:px-16 sm:py-24">
+              <span aria-hidden="true" className="home-cta__beam" />
+              <p className="eyebrow justify-center">Registration</p>
+              <SplitText
+                text="Take the detour."
+                accent={[2]}
+                className="mx-auto mt-7 max-w-4xl text-5xl font-bold leading-[0.95] tracking-tight text-chalk sm:text-8xl"
+              />
+              <p className="mx-auto mt-8 max-w-md text-lg text-slate-300">
+                Registration and submissions open soon. Reach out to join the programme.
+              </p>
+              <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+                <Button to="/contact" arrow>
+                  Contact Us
+                </Button>
+                <Button to="/events" variant="ghost">
+                  View Events
+                </Button>
+              </div>
+              <div className="mt-12 flex flex-wrap items-center justify-center gap-3">
+                <TagChip>{totalEvents} events</TagChip>
+                <TagChip>{eventCategories.length} categories</TagChip>
+                <TagChip>{TRACKS.length} tracks</TagChip>
+              </div>
             </div>
           </Reveal>
         </div>

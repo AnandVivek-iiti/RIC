@@ -1,36 +1,84 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ─────────────────────────────────────────────────────────────────────────
+   RIC'27 · "Changing Tangents" — Prismatic Glassmorphism & Iridescence
+   One lighting rule for the whole site: light travels left → right and
+   dips slightly downward as it bends. Highlights sit on the top/left edges
+   of glass, spectral colour appears only on the lower/right (exit) edges.
+   Colours are RGB channels so they work in rgb(var(--c-x) / alpha).
+   ───────────────────────────────────────────────────────────────────────── */
+:root {
+  --c-ink: 6 43 50; /* Midnight Teal  #062B32 */
+  --c-ink-light: 11 58 68; /* #0B3A44 */
+  --c-ink-soft: 39 83 92; /* #27535C */
+  --c-ink-deep: 3 28 33; /* #031C21 */
+
+  --c-blue: 36 92 255; /* Prismatic Blue  #245CFF */
+  --c-blue-light: 140 170 255; /* #8CAAFF — blue for text on dark */
+  --c-blue-dark: 27 69 199; /* #1B45C7 */
+
+  --c-cyan: 54 229 232; /* Iridescent Cyan  #36E5E8 */
+  --c-cyan-light: 140 240 242; /* #8CF0F2 */
+  --c-cyan-dark: 31 169 173; /* #1FA9AD */
+
+  --c-amber: 255 200 120; /* Refraction Amber  #FFC878 */
+  --c-amber-light: 255 224 174; /* #FFE0AE */
+  --c-amber-dark: 224 162 79; /* #E0A24F */
+
+  --c-coral: 255 106 114; /* Spectral Coral  #FF6A72 */
+  --c-coral-light: 255 144 150; /* #FF9096 */
+  --c-coral-dark: 194 74 82; /* #C24A52 */
+
+  --c-pearl: 236 234 246; /* Soft Lavender Pearl  #ECEAF6 — text */
+  --c-titanium: 167 176 186; /* Frosted Titanium Grey  #A7B0BA */
+  --c-chrome: 213 220 230; /* Prismatic Chrome  #D5DCE6 */
+  --c-magenta: 214 79 200; /* rare accent only (magenta → teal) */
+
+  /* Type — Set 1 by default; the header "Font test" switcher overrides these */
+  --font-display: "DM Serif Display", Georgia, "Times New Roman", serif;
+  --font-sub: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-body: "DM Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "Courier Prime", ui-monospace, "Courier New", monospace;
+  --font-sub-style: normal;
+  --font-sub-weight: 500;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
+    color-scheme: dark;
+    /* single-weight faces (Anton, Archivo Black …) must not get a faux bold */
+    font-synthesis: none;
   }
 
   body {
-    background-color: #1e1b4b;
-    font-family: Inter, system-ui, -apple-system, sans-serif;
-    color: #cbd5e1;
+    background-color: rgb(var(--c-ink));
+    font-family: var(--font-body);
+    color: rgb(var(--c-chrome));
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
   }
 
   ::selection {
-    background: #f59e0b;
-    color: #1e1b4b;
+    background: rgb(var(--c-cyan));
+    color: rgb(var(--c-ink));
   }
 
   h1,
-  h2,
+  h2 {
+    font-family: var(--font-display);
+  }
+
   h3 {
-    font-family: "Space Grotesk", system-ui, sans-serif;
+    font-family: var(--font-sub);
+    font-style: var(--font-sub-style);
   }
 
   :focus-visible {
-    outline: 2px solid #f59e0b;
+    outline: 2px solid rgb(var(--c-cyan));
     outline-offset: 3px;
   }
 
@@ -40,15 +88,15 @@
     height: 10px;
   }
   ::-webkit-scrollbar-track {
-    background: #13113a;
+    background: rgb(var(--c-ink-deep));
   }
   ::-webkit-scrollbar-thumb {
-    background: #312e81;
+    background: rgb(var(--c-ink-soft));
     border-radius: 999px;
-    border: 2px solid #13113a;
+    border: 2px solid rgb(var(--c-ink-deep));
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #4338ca;
+    background: rgb(var(--c-titanium) / 0.6);
   }
 
   /* Custom cursor: hide the native one only where it is active */
@@ -75,18 +123,55 @@
 }
 
 @layer components {
-  .glass {
-    background: rgba(49, 46, 129, 0.3);
-    border: 1px solid rgba(45, 212, 191, 0.15);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+  /* Subheading face: weight and style come from the active font set */
+  .font-sub {
+    font-style: var(--font-sub-style);
+    font-weight: var(--font-sub-weight);
+  }
+
+  /* ── Frosted glass ──
+     backdrop blur · crisp 1px highlight on the lit (top/left) edges ·
+     faint cool shade on the far (bottom/right) edges · soft inner shadow */
+  .glass,
+  .glass-strong,
+  .glass-nav {
+    position: relative;
+    border: 1px solid rgb(var(--c-pearl) / 0.12);
+    background: linear-gradient(
+      135deg,
+      rgb(var(--c-pearl) / 0.09),
+      rgb(var(--c-pearl) / 0.03) 48%,
+      rgb(var(--c-blue) / 0.05)
+    );
+    box-shadow:
+      inset 1px 1px 0 rgb(255 255 255 / 0.2),
+      inset -1px -1px 0 rgb(var(--c-blue) / 0.12),
+      inset 0 0 24px rgb(var(--c-ink-deep) / 0.35),
+      0 18px 36px -22px rgb(0 0 0 / 0.6);
+    backdrop-filter: blur(14px) saturate(1.25);
+    -webkit-backdrop-filter: blur(14px) saturate(1.25);
   }
 
   .glass-strong {
-    background: rgba(49, 46, 129, 0.48);
-    border: 1px solid rgba(45, 212, 191, 0.22);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    background: linear-gradient(
+      135deg,
+      rgb(var(--c-pearl) / 0.14),
+      rgb(var(--c-pearl) / 0.05) 50%,
+      rgb(var(--c-blue) / 0.08)
+    );
+    backdrop-filter: blur(20px) saturate(1.3);
+    -webkit-backdrop-filter: blur(20px) saturate(1.3);
+  }
+
+  .glass-nav {
+    border-color: rgb(var(--c-pearl) / 0.14);
+    background: linear-gradient(
+      135deg,
+      rgb(var(--c-ink-deep) / 0.72),
+      rgb(var(--c-ink-light) / 0.6)
+    );
+    backdrop-filter: blur(18px) saturate(1.3);
+    -webkit-backdrop-filter: blur(18px) saturate(1.3);
   }
 
   /* Shared page container */
@@ -106,16 +191,17 @@
     }
   }
 
-  /* Small uppercase label with a leading rule */
+  /* Small uppercase label with a leading rule (uses the mono / label face) */
   .eyebrow {
     display: inline-flex;
     align-items: center;
     gap: 0.75rem;
+    font-family: var(--font-mono);
     font-size: 0.72rem;
     font-weight: 600;
-    letter-spacing: 0.28em;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: #5eead4;
+    color: rgb(var(--c-cyan-light));
   }
 
   .eyebrow::before {
@@ -126,15 +212,28 @@
     opacity: 0.6;
   }
 
-  /* Card with a cursor-following amber glow (see SpotlightCard) */
+  /* Glass card with a cursor-following glow (see SpotlightCard).
+     On hover a thin spectral edge appears on the exit (lower/right) side only. */
   .spotlight {
     position: relative;
     isolation: isolate;
     overflow: hidden;
-    border: 1px solid rgba(237, 233, 254, 0.08);
+    border: 1px solid rgb(var(--c-pearl) / 0.12);
     border-radius: 1.25rem;
-    background: rgba(49, 46, 129, 0.16);
-    transition: border-color 0.4s ease, background-color 0.4s ease;
+    background: linear-gradient(
+      135deg,
+      rgb(var(--c-pearl) / 0.085),
+      rgb(var(--c-pearl) / 0.025) 48%,
+      rgb(var(--c-blue) / 0.05)
+    );
+    box-shadow:
+      inset 1px 1px 0 rgb(255 255 255 / 0.2),
+      inset -1px -1px 0 rgb(var(--c-blue) / 0.12),
+      inset 0 0 28px rgb(var(--c-ink-deep) / 0.35),
+      0 20px 40px -26px rgb(0 0 0 / 0.65);
+    backdrop-filter: blur(14px) saturate(1.25);
+    -webkit-backdrop-filter: blur(14px) saturate(1.25);
+    transition: border-color 0.4s ease, box-shadow 0.4s ease;
   }
 
   .spotlight::before {
@@ -147,16 +246,41 @@
     transition: opacity 0.4s ease;
     background: radial-gradient(
       320px circle at var(--mx, 50%) var(--my, 50%),
-      rgba(var(--glow, 245, 158, 11), 0.16),
+      rgba(var(--glow, 255, 200, 120), 0.14),
       transparent 70%
     );
   }
 
-  .spotlight:hover {
-    border-color: rgba(245, 158, 11, 0.35);
+  .spotlight::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    padding: 1px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    background: linear-gradient(
+      115deg,
+      transparent 54%,
+      rgb(var(--c-blue) / 0.85) 68%,
+      rgb(var(--c-cyan) / 0.85) 80%,
+      rgb(var(--c-amber) / 0.85) 91%,
+      rgb(var(--c-coral) / 0.85)
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
   }
 
-  .spotlight:hover::before {
+  .spotlight:hover {
+    border-color: rgb(var(--c-pearl) / 0.22);
+  }
+
+  .spotlight:hover::before,
+  .spotlight:hover::after {
     opacity: 1;
   }
 
@@ -172,7 +296,7 @@
     right: 0;
     bottom: 0;
     height: 1px;
-    background: #f59e0b;
+    background: rgb(var(--c-cyan));
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
@@ -194,30 +318,165 @@
       opacity: 1;
     }
   }
+
+  /* "Font test" swatches (see components/common/FontSwitcher): a glass pill of
+     round buttons. The ring is split diagonally, light on the lit side, dark on the far side. */
+  .font-swatches {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.3rem;
+    border-radius: 999px;
+    border: 1px solid rgb(var(--c-pearl) / 0.16);
+    background: linear-gradient(135deg, rgb(var(--c-pearl) / 0.1), rgb(var(--c-ink-deep) / 0.55));
+    box-shadow: inset 1px 1px 0 rgb(255 255 255 / 0.18), inset 0 0 14px rgb(var(--c-ink-deep) / 0.4);
+  }
+
+  .font-swatch {
+    --size: 1.3rem;
+    flex: none;
+    width: var(--size);
+    height: var(--size);
+    padding: 2px;
+    border: 0;
+    border-radius: 999px;
+    cursor: pointer;
+    background: linear-gradient(135deg, rgb(var(--sw)) 50%, rgb(var(--c-ink-deep)) 50%);
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+  }
+
+  .font-swatch__face {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    border-radius: 999px;
+    background: rgb(var(--c-ink-deep));
+    color: rgb(var(--c-pearl));
+    font-size: 0.56rem;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  @media (min-width: 1024px) {
+    .font-swatches:not(.font-swatches--menu) .font-swatch {
+      --size: 1.5rem;
+    }
+  }
+
+  .font-swatch:hover {
+    transform: scale(1.1);
+  }
+
+  .font-swatch.is-active {
+    box-shadow: 0 0 0 2px rgb(var(--c-ink)), 0 0 0 3.5px rgb(var(--sw));
+  }
+
+  .font-swatch.is-active .font-swatch__face {
+    background: rgb(var(--sw));
+    color: rgb(var(--c-ink-deep));
+  }
+
+  .font-swatches--menu {
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    padding: 0.4rem;
+    border-radius: 1.5rem;
+  }
+
+  .font-swatches--menu .font-swatch {
+    --size: 2rem;
+  }
+
+  .font-swatches--menu .font-swatch__face {
+    font-size: 0.72rem;
+  }
+
+  /* Hairline between sections; spectral colour only at the far (right) end */
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgb(var(--c-pearl) / 0.18) 18%,
+      rgb(var(--c-pearl) / 0.1) 55%,
+      rgb(var(--c-cyan) / 0.45) 78%,
+      rgb(var(--c-amber) / 0.45) 90%,
+      transparent
+    );
+  }
+
+  /* Page header: a soft cool pool of light behind the title and a beam rule below it */
+  .page-header::before {
+    content: "";
+    position: absolute;
+    left: -8%;
+    top: 4rem;
+    width: 46rem;
+    max-width: 90%;
+    height: 22rem;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(closest-side, rgb(var(--c-blue) / 0.14), transparent 75%);
+  }
+
+  .beam-rule {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      rgb(var(--c-pearl) / 0.22),
+      rgb(var(--c-pearl) / 0.08) 50%,
+      rgb(var(--c-cyan) / 0.4) 80%,
+      rgb(var(--c-amber) / 0.4) 92%,
+      transparent
+    );
+  }
+
+  /* Outlined numeral (event numbers, track numbers); colour comes from --ol */
+  .numeral {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--ol, rgb(var(--c-pearl) / 0.4));
+  }
+
+  /* RIC logo facets: a faint cool contour so the mark reads as cut glass */
+  .ric-facet,
+  .ric-outline {
+    stroke: rgb(var(--c-cyan));
+    stroke-linejoin: round;
+  }
+
+  .ric-facet {
+    stroke-opacity: 0.26;
+    stroke-width: 0.6;
+  }
 }
 
 @layer utilities {
-  /* Blueprint / chalkboard grid overlay */
+  /* Faint construction grid — kept almost invisible so the stage stays dark */
   .bg-blueprint {
     background-image:
-      linear-gradient(rgba(94, 234, 212, 0.045) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(94, 234, 212, 0.045) 1px, transparent 1px);
+      linear-gradient(rgb(var(--c-titanium) / 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--c-titanium) / 0.03) 1px, transparent 1px);
     background-size: 64px 64px;
   }
 
   /* Outlined text */
   .text-outline {
-    -webkit-text-stroke: 1.5px rgba(245, 158, 11, 0.55);
+    -webkit-text-stroke: 1.5px rgb(var(--c-amber) / 0.55);
     color: transparent;
   }
 
   .text-outline-soft {
-    -webkit-text-stroke: 1px rgba(237, 233, 254, 0.14);
+    -webkit-text-stroke: 1px rgb(var(--c-pearl) / 0.14);
     color: transparent;
   }
 }
 
-/* Slow ambient glow that sits behind the whole site */
+/* Quiet ambient light behind the whole site: a cool wash entering from the
+   upper left, a faint warm one where the beam exits at the lower right. */
 .ambient {
   position: fixed;
   inset: 0;
@@ -233,7 +492,7 @@
   width: 60vmax;
   height: 60vmax;
   border-radius: 50%;
-  filter: blur(80px);
+  filter: blur(90px);
   opacity: 0.5;
   will-change: transform;
 }
@@ -241,14 +500,14 @@
 .ambient::before {
   top: -25vmax;
   left: -15vmax;
-  background: radial-gradient(circle, rgba(245, 158, 11, 0.13), transparent 65%);
+  background: radial-gradient(circle, rgb(var(--c-blue) / 0.14), transparent 65%);
   animation: drift-a 28s ease-in-out infinite alternate;
 }
 
 .ambient::after {
   right: -20vmax;
   bottom: -25vmax;
-  background: radial-gradient(circle, rgba(45, 212, 191, 0.12), transparent 65%);
+  background: radial-gradient(circle, rgb(var(--c-cyan) / 0.08), rgb(var(--c-amber) / 0.03) 45%, transparent 65%);
   animation: drift-b 34s ease-in-out infinite alternate;
 }
 
@@ -267,8 +526,8 @@
 /* ── Animated marquee strip ── */
 .marquee {
   overflow: hidden;
-  border-top: 1px solid rgba(237, 233, 254, 0.08);
-  border-bottom: 1px solid rgba(237, 233, 254, 0.08);
+  border-top: 1px solid rgb(var(--c-pearl) / 0.08);
+  border-bottom: 1px solid rgb(var(--c-pearl) / 0.08);
   mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
 }
@@ -288,23 +547,23 @@
   align-items: center;
   gap: 2rem;
   padding: 1.4rem 2rem 1.4rem 0;
-  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-family: var(--font-display);
   font-size: clamp(1.4rem, 3vw, 2.2rem);
   font-weight: 600;
   letter-spacing: -0.01em;
   white-space: nowrap;
-  -webkit-text-stroke: 1px rgba(237, 233, 254, 0.28);
+  -webkit-text-stroke: 1px rgb(var(--c-pearl) / 0.28);
   color: transparent;
 }
 
 .marquee-item:nth-child(3n) {
-  color: rgba(237, 233, 254, 0.9);
+  color: rgb(var(--c-pearl) / 0.9);
   -webkit-text-stroke: 0;
 }
 
 .marquee-dot {
   font-size: 0.8em;
-  color: #f59e0b;
+  color: rgb(var(--c-amber));
   -webkit-text-stroke: 0;
 }
 
@@ -324,4 +583,71 @@
 .shimmer {
   background-size: 200% auto;
   animation: shimmer 6s linear infinite;
+}
+
+/* ── RIC logo (see components/common/Logo) ── */
+.ric-halo {
+  position: absolute;
+  inset: -14%;
+  z-index: -1;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(
+    closest-side,
+    rgb(var(--c-blue) / 0.16),
+    rgb(var(--c-cyan) / 0.05) 55%,
+    transparent 74%
+  );
+  animation: ric-breathe 7s ease-in-out infinite alternate;
+}
+
+@keyframes ric-breathe {
+  from {
+    opacity: 0.55;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
+/* A band of light that sweeps across the crystal like a tangent line */
+.ric-sheen {
+  opacity: 0;
+}
+
+.ric-logo--hero .ric-sheen {
+  animation: ric-sheen 9s cubic-bezier(0.65, 0, 0.35, 1) 5s infinite;
+}
+
+.ric-logo--nav:hover .ric-sheen {
+  animation: ric-sheen-once 0.9s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+@keyframes ric-sheen {
+  0% {
+    transform: translateX(-640px);
+    opacity: 0.9;
+  }
+  14% {
+    transform: translateX(640px);
+    opacity: 0.9;
+  }
+  15%,
+  100% {
+    transform: translateX(640px);
+    opacity: 0;
+  }
+}
+
+@keyframes ric-sheen-once {
+  from {
+    transform: translateX(-640px);
+    opacity: 0.9;
+  }
+  to {
+    transform: translateX(640px);
+    opacity: 0.9;
+  }
 }
