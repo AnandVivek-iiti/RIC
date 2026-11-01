@@ -24,7 +24,7 @@ const values = [
   },
   {
     icon: Layers,
-    accent: "#8CAAFF",
+    accent: "#ECEAF6",
     title: "Lateral by default",
     text: "We connect distant disciplines so a tangent in one becomes a breakthrough in another.",
   },
@@ -33,7 +33,7 @@ const values = [
 const stages = [
   { name: "Linear", text: "Centuries of straight-line progress built the world we know." },
   { name: "Fracture", text: "Rigid methodologies began to crack under complexity they could not model." },
-  { name: "Tangent", text: "The detour becomes the method, changing anomalies toward new paradigms." },
+  { name: "Tangent", text: "The detour becomes the method, chasing anomalies toward new paradigms." },
   { name: "Horizon", text: "From broken logic to brilliant horizons: an era of lateral transformation." },
 ];
 
@@ -88,7 +88,7 @@ export default function About() {
       {/* Values */}
       <section className="container-x py-20 sm:py-28">
         <SectionHeader eyebrow="What we stand for" title="Three habits of mind" accent={[2]} />
-        <div className="mt-14 grid grid-cols-1 gap-5 md:grid-cols-3">
+        <div className="mt-14 grid gap-5 md:grid-cols-3">
           {values.map((value, i) => {
             const Icon = value.icon;
             return (

@@ -106,7 +106,7 @@ export const eventCategories = [
     short: "Humanities",
     subtitle: "Ethics, society and decisions in the real world",
     icon: "Scale",
-    accent: "#8CAAFF",
+    accent: "#1FA9AD",
     events: [
       {
         id: "case-chronicles-zero-day-debate",
@@ -124,7 +124,7 @@ export const eventCategories = [
     short: "School",
     subtitle: "Competitions for school students",
     icon: "School",
-    accent: "#FF6A72",
+    accent: "#E0A24F",
     events: [
       {
         id: "writing-competition",

@@ -23,7 +23,7 @@
     90deg,
     rgb(var(--c-amber)),
     rgb(var(--c-amber-light)) 40%,
-    rgb(var(--c-coral-light)) 80%,
+    rgb(var(--c-amber-dark)) 80%,
     rgb(var(--c-amber))
   );
   -webkit-background-clip: text;

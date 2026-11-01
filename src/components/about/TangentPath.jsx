@@ -9,7 +9,7 @@ const SEGMENTS = [
   { d: "M 30 230 L 250 230", color: "rgb(var(--c-pearl) / 0.7)", start: 0, dur: 0.8 },
   {
     d: "M 250 230 L 285 185 L 315 248 L 345 170 L 375 240 L 405 198 L 440 232",
-    color: "rgb(var(--c-coral-light))",
+    color: "rgb(var(--c-amber-dark))",
     start: 0.8,
     dur: 1,
   },
@@ -20,7 +20,7 @@ const SEGMENTS = [
 
 const NODES = [
   { x: 125, y: 230, at: 0.5, color: "rgb(var(--c-pearl))" },
-  { x: 375, y: 240, at: 1.6, color: "rgb(var(--c-coral-light))" },
+  { x: 375, y: 240, at: 1.6, color: "rgb(var(--c-amber-dark))" },
   { x: 625, y: 165, at: 2.7, color: "rgb(var(--c-cyan))" },
   { x: 875, y: 70, at: 3.8, color: "rgb(var(--c-amber))" },
 ];

@@ -18,12 +18,15 @@ token names as before, so existing classes (`bg-ink`, `text-mint`, …) still wo
 | Token      | Role                                   | Hex       |
 | ---------- | -------------------------------------- | --------- |
 | `ink`      | Midnight Teal — the stage              | `#062B32` |
-| `prism`    | Prismatic Blue (new)                   | `#245CFF` |
+| `prism`    | retired — now a cyan shade (glass tints) | `#1FA9AD` |
 | `mint`     | Iridescent Cyan — labels, hover        | `#36E5E8` |
 | `amber`    | Refraction Amber — warm light          | `#FFC878` |
-| `crimson`  | Spectral Coral — red end of the split  | `#FF6A72` |
+| `crimson`  | Form error messages only               | `#FF6A72` |
 | `chalk`    | Soft Lavender Pearl — text             | `#ECEAF6` |
 | `titanium` / `chrome` / `magenta` | glass neutrals / rare accent | `#A7B0BA` / `#D5DCE6` / `#D64FC8` |
+
+The visible palette is three colours: **cyan, amber and white**. Blue and red are no longer used
+for decoration (red stays for form errors).
 
 Lighting rule: light travels left → right and dips slightly downward. Glass highlights sit on the
 top/left edges; spectral colour appears only at exit edges (lower/right) and in the hero beam.

@@ -9,8 +9,8 @@ import { TRACKS } from "../../utils/constants";
 const LOOKS = [
   { icon: Telescope, accent: "#36E5E8", angle: -18 },
   { icon: Cpu, accent: "#FFC878", angle: -6 },
-  { icon: Layers, accent: "#8CAAFF", angle: 8 },
-  { icon: Compass, accent: "#FF6A72", angle: 20 },
+  { icon: Layers, accent: "#ECEAF6", angle: 8 },
+  { icon: Compass, accent: "#E0A24F", angle: 20 },
 ];
 
 function TangentMotif({ accent, angle }) {
@@ -31,7 +31,7 @@ function TangentMotif({ accent, angle }) {
 
 export default function TracksShowcase() {
   return (
-    <div className="mt-14 grid grid-cols-1 gap-5 md:grid-cols-2">
+    <div className="mt-14 grid gap-5 md:grid-cols-2">
       {TRACKS.map((track, i) => {
         const look = LOOKS[i % LOOKS.length];
         const Icon = look.icon;

@@ -36,7 +36,7 @@ export default function Timeline({ items = [] }) {
       <span aria-hidden="true" className="absolute bottom-2 left-[6px] top-2 w-px bg-chalk/10" />
       <motion.span
         aria-hidden="true"
-        className="absolute bottom-2 left-[6px] top-2 w-px origin-top bg-gradient-to-b from-mint to-prism-light"
+        className="absolute bottom-2 left-[6px] top-2 w-px origin-top bg-gradient-to-b from-mint to-amber"
         style={{ scaleY }}
       />
       <ol className="space-y-12">

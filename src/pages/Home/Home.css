@@ -35,7 +35,7 @@
     rgb(var(--c-pearl) / 0.8),
     rgb(var(--c-cyan)) 70%,
     rgb(var(--c-amber)) 92%,
-    rgb(var(--c-coral))
+    rgb(var(--c-amber-dark))
   );
   transform: scaleX(0);
   transform-origin: left;

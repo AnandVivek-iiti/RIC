@@ -15,9 +15,9 @@
   --c-ink-soft: 39 83 92; /* #27535C */
   --c-ink-deep: 3 28 33; /* #031C21 */
 
-  --c-blue: 36 92 255; /* Prismatic Blue  #245CFF */
-  --c-blue-light: 140 170 255; /* #8CAAFF — blue for text on dark */
-  --c-blue-dark: 27 69 199; /* #1B45C7 */
+  --c-blue: 31 169 173; /* retired blue: now Cyan Dark  #1FA9AD */
+  --c-blue-light: 140 240 242; /* now Cyan Light  #8CF0F2 */
+  --c-blue-dark: 31 169 173; /* now Cyan Dark  #1FA9AD */
 
   --c-cyan: 54 229 232; /* Iridescent Cyan  #36E5E8 */
   --c-cyan-light: 140 240 242; /* #8CF0F2 */
@@ -27,7 +27,7 @@
   --c-amber-light: 255 224 174; /* #FFE0AE */
   --c-amber-dark: 224 162 79; /* #E0A24F */
 
-  --c-coral: 255 106 114; /* Spectral Coral  #FF6A72 */
+  --c-coral: 255 106 114; /* Spectral Coral  #FF6A72 — form errors only */
   --c-coral-light: 255 144 150; /* #FF9096 */
   --c-coral-dark: 194 74 82; /* #C24A52 */
 
@@ -267,7 +267,7 @@
       rgb(var(--c-blue) / 0.85) 68%,
       rgb(var(--c-cyan) / 0.85) 80%,
       rgb(var(--c-amber) / 0.85) 91%,
-      rgb(var(--c-coral) / 0.85)
+      rgb(var(--c-amber-dark) / 0.85)
     );
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
@@ -333,7 +333,7 @@
   }
 
   .font-swatch {
-    --size: 1.5rem;
+    --size: 1.3rem;
     flex: none;
     width: var(--size);
     height: var(--size);
@@ -358,9 +358,9 @@
     letter-spacing: -0.02em;
   }
 
-  @media (max-width: 639px) {
-    .font-swatches--float .font-swatch {
-      --size: 1.75rem;
+  @media (min-width: 1024px) {
+    .font-swatches:not(.font-swatches--menu) .font-swatch {
+      --size: 1.5rem;
     }
   }
 
@@ -375,13 +375,6 @@
   .font-swatch.is-active .font-swatch__face {
     background: rgb(var(--sw));
     color: rgb(var(--c-ink-deep));
-  }
-
-  .font-swatches--float {
-    background: linear-gradient(135deg, rgb(var(--c-ink-deep) / 0.82), rgb(var(--c-ink-light) / 0.7));
-    backdrop-filter: blur(14px) saturate(1.25);
-    -webkit-backdrop-filter: blur(14px) saturate(1.25);
-    box-shadow: inset 1px 1px 0 rgb(255 255 255 / 0.18), 0 10px 24px -12px rgb(0 0 0 / 0.7);
   }
 
   .font-swatches--menu {

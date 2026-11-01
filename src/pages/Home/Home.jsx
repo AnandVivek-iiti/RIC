@@ -116,7 +116,7 @@ function Dates() {
       <div className="absolute bottom-3 left-[11px] top-3 w-px bg-chalk/10" />
       <motion.div
         style={{ scaleY }}
-        className="absolute bottom-3 left-[11px] top-3 w-px origin-top bg-gradient-to-b from-mint to-prism-light"
+        className="absolute bottom-3 left-[11px] top-3 w-px origin-top bg-gradient-to-b from-mint to-amber"
       />
       <ol className="space-y-5">
         {IMPORTANT_DATES.map((item, i) => {
@@ -211,12 +211,12 @@ export default function Home() {
             const Icon = item.icon;
             return (
               <Reveal key={item.title} delay={i * 0.1}>
-                <GlassCard accent="#FF9096" className="h-full rounded-3xl p-8 sm:p-10">
+                <GlassCard accent="#8CF0F2" className="h-full rounded-3xl p-8 sm:p-10">
                   <div className="flex items-center justify-between gap-4">
-                    <span className="grid h-11 w-11 place-items-center rounded-2xl border border-crimson-light/40 text-crimson-light">
+                    <span className="grid h-11 w-11 place-items-center rounded-2xl border border-mint-light/40 text-mint-light">
                       <Icon aria-hidden="true" className="h-5 w-5" />
                     </span>
-                    <TagChip accent="#FF9096">{item.tag}</TagChip>
+                    <TagChip accent="#8CF0F2">{item.tag}</TagChip>
                   </div>
                   <h3 className="mt-10 font-sub text-3xl font-semibold tracking-tight text-chalk">
                     {item.title}
