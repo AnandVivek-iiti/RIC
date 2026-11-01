@@ -206,7 +206,7 @@ export default function Preloader({ onReveal, onDone }) {
           />
         </div>
         <p className="font-mono text-[0.66rem] uppercase tracking-[0.3em] text-slate-400">
-          Chasing Tangents <span className="px-1 text-amber">/</span> RIC 2027
+          Changing Tangents <span className="px-1 text-amber">/</span> RIC 2027
         </p>
       </div>
     </div>

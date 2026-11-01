@@ -167,7 +167,7 @@ export default function Home() {
         </Reveal>
         <ScrollText
           text={aboutText}
-          accent={["chasing", "tangents"]}
+          accent={["changing", "tangents"]}
           className="mt-8 max-w-4xl font-display text-3xl font-medium leading-[1.2] tracking-tight text-chalk sm:text-5xl"
         />
         <Reveal delay={0.1} className="mt-10">

@@ -33,7 +33,7 @@ const values = [
 const stages = [
   { name: "Linear", text: "Centuries of straight-line progress built the world we know." },
   { name: "Fracture", text: "Rigid methodologies began to crack under complexity they could not model." },
-  { name: "Tangent", text: "The detour becomes the method, chasing anomalies toward new paradigms." },
+  { name: "Tangent", text: "The detour becomes the method, changing anomalies toward new paradigms." },
   { name: "Horizon", text: "From broken logic to brilliant horizons: an era of lateral transformation." },
 ];
 

@@ -2,7 +2,7 @@ export const SITE = {
   name: "RIC",
   fullName: "Research and Industrial Conclave",
   year: "2027",
-  theme: "Chasing Tangents",
+  theme: "Changing Tangents",
   tagline: "From broken logic to brilliant horizons",
   genre: "Abstract",
   dates: "2027",

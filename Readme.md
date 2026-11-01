@@ -2,7 +2,7 @@
 
 Official website for RIC, built with React.js and Vite.
 
-## Theme — Chasing Tangents
+## Theme — Changing Tangents
 
 > From broken logic to brilliant horizons.
 
