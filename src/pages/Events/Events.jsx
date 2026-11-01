@@ -60,7 +60,7 @@ function Filter({ value, onChange, reduce }) {
     <div
       role="group"
       aria-label="Filter events by category"
-      className="glass -mx-1 flex gap-1 overflow-x-auto rounded-full p-1.5 [scrollbar-width:none] sm:mx-0 sm:w-fit [&::-webkit-scrollbar]:hidden"
+      className="glass -mx-1 flex gap-1 overflow-x-auto rounded-full p-1.5 [scrollbar-width:none] sm:mx-0 sm:w-fit sm:max-w-full [&::-webkit-scrollbar]:hidden"
     >
       <LayoutGroup id="event-filter">
         {options.map((option) => {
@@ -349,7 +349,7 @@ export default function Events() {
           {activeCategory && <span className="hidden text-slate-400 sm:inline">· {activeCategory.subtitle}</span>}
         </p>
 
-        <ul className="mt-8 grid min-h-[30rem] content-start gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-8 grid grid-cols-1 min-h-[30rem] content-start gap-5 sm:grid-cols-2 lg:grid-cols-3">
           <AnimatePresence mode="popLayout" initial={false}>
             {visible.map((event) => (
               <EventCard key={event.id} event={event} onOpen={open} reduce={reduce} />

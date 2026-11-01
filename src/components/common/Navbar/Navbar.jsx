@@ -3,7 +3,6 @@ import { NavLink, useLocation } from "react-router-dom";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { NAV_LINKS, SITE } from "../../../utils/constants";
 import Logo from "../Logo/Logo";
-import FontSwitcher from "../FontSwitcher/FontSwitcher";
 
 const EASE = [0.22, 1, 0.36, 1];
 
@@ -32,7 +31,7 @@ export default function Navbar() {
     <header className="fixed inset-x-0 top-0 z-50 flex justify-center px-3 pt-3 sm:pt-4">
       <motion.nav
         initial={{ y: -60, opacity: 0 }}
-        animate={{ y: 0, opacity: 1, maxWidth: scrolled ? 980 : 1152 }}
+        animate={{ y: 0, opacity: 1, maxWidth: scrolled ? 780 : 1152 }}
         transition={{ duration: 0.7, ease: EASE, delay: 0.2 }}
         className="relative z-50 flex h-14 w-full items-center justify-between rounded-full px-3 pl-5"
       >
@@ -57,7 +56,7 @@ export default function Navbar() {
               <NavLink
                 to={link.to}
                 end={link.to === "/"}
-                className="relative block whitespace-nowrap rounded-full px-3 py-2 text-sm font-medium lg:px-4"
+                className="relative block rounded-full px-4 py-2 text-sm font-medium"
               >
                 {({ isActive }) => (
                   <>
@@ -81,11 +80,6 @@ export default function Navbar() {
             </li>
           ))}
         </ul>
-
-        {/* Font test — temporary type switcher (see data/fontSets.js) */}
-        <div className="hidden md:block">
-          <FontSwitcher />
-        </div>
 
         <button
           type="button"
@@ -144,9 +138,6 @@ export default function Navbar() {
                 </motion.li>
               ))}
             </ul>
-            <div className="mt-10">
-              <FontSwitcher variant="menu" />
-            </div>
             <p className="mt-10 font-mono text-xs uppercase tracking-[0.25em] text-slate-500">
               {SITE.fullName} {SITE.year}
             </p>

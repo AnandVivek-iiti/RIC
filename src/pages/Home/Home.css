@@ -63,3 +63,14 @@
     transparent
   );
 }
+
+/* "Resources" and "Templates" headings: the shared eyebrow style, only larger */
+.home-heading {
+  gap: 1rem;
+  font-size: clamp(1.15rem, 4.2vw, 1.75rem);
+  letter-spacing: 0.16em;
+}
+
+.home-heading::before {
+  width: 2.75rem;
+}

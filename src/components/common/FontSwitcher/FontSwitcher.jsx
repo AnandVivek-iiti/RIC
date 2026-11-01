@@ -30,6 +30,7 @@ const SWATCH_COLORS = [
 
 export default function FontSwitcher({ variant = "nav" }) {
   const [current, setCurrent] = useState(readStoredFontSet);
+  const [open, setOpen] = useState(false); // float variant on phones: collapsed to one swatch
   const groupRef = useRef(null);
 
   // Keep several switchers (navbar + mobile menu) in step
@@ -40,6 +41,7 @@ export default function FontSwitcher({ variant = "nav" }) {
   }, []);
 
   async function select(id) {
+    setOpen(false);
     if (id === current) return;
     setCurrent(id);
     await loadFontSet(id);
@@ -60,13 +62,17 @@ export default function FontSwitcher({ variant = "nav" }) {
     groupRef.current?.querySelector(`[data-set="${next.id}"]`)?.focus();
   }
 
-  return (
+  const isFloat = variant === "float";
+  const currentIndex = Math.max(0, FONT_SETS.findIndex((set) => set.id === current));
+  const currentSet = FONT_SETS[currentIndex];
+
+  const group = (
     <div
       ref={groupRef}
       role="radiogroup"
       aria-label="Font test"
       onKeyDown={onKeyDown}
-      className={`font-swatches ${variant === "menu" ? "font-swatches--menu" : ""}`}
+      className={`font-swatches ${variant === "menu" || variant === "float" ? `font-swatches--${variant}` : ""}`}
     >
       {FONT_SETS.map((set, i) => {
         const active = set.id === current;
@@ -91,6 +97,32 @@ export default function FontSwitcher({ variant = "nav" }) {
           </button>
         );
       })}
+    </div>
+  );
+
+  if (!isFloat) return group;
+
+  // Float variant: full pill from 640px up; on phones one swatch that opens the pill
+  const toggleLabel = `Font test: ${headingName(currentSet)} (tap to change)`;
+  return (
+    <div className="flex items-center gap-2 max-sm:flex-col-reverse max-sm:items-start">
+      <button
+        type="button"
+        aria-expanded={open}
+        aria-label={toggleLabel}
+        title={toggleLabel}
+        onClick={() => setOpen((value) => !value)}
+        className="font-swatch is-active sm:hidden"
+        style={{
+          "--sw": hexToChannels(SWATCH_COLORS[currentIndex % SWATCH_COLORS.length]),
+          "--size": "2.25rem",
+        }}
+      >
+        <span className="font-swatch__face" style={{ fontFamily: currentSet.display }}>
+          Aa
+        </span>
+      </button>
+      <div className={open ? "" : "max-sm:hidden"}>{group}</div>
     </div>
   );
 }

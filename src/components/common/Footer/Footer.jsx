@@ -20,7 +20,7 @@ export default function Footer() {
           </p>
         </Reveal>
 
-        <div className="mt-16 grid gap-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_0.8fr_1fr_1.2fr]">
+        <div className="mt-16 grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_0.8fr_1fr_1.2fr]">
           <div>
             <div className="flex items-center gap-2.5">
               <Logo className="h-8 w-[2.4rem]" />
@@ -44,7 +44,7 @@ export default function Footer() {
                 <li key={link.to}>
                   <Link
                     to={link.to}
-                    className="inline-block text-slate-300 transition-all duration-300 hover:translate-x-1 hover:text-amber"
+                    className="inline-block py-1 text-slate-300 transition-all duration-300 hover:translate-x-1 hover:text-amber"
                   >
                     {link.label}
                   </Link>
@@ -60,7 +60,7 @@ export default function Footer() {
                 <li key={category.id}>
                   <Link
                     to={`/events?category=${category.id}`}
-                    className="inline-flex items-center gap-2.5 text-slate-300 transition-all duration-300 hover:translate-x-1 hover:text-amber"
+                    className="inline-flex items-center gap-2.5 py-1 text-slate-300 transition-all duration-300 hover:translate-x-1 hover:text-amber"
                   >
                     <span
                       aria-hidden="true"
@@ -78,13 +78,13 @@ export default function Footer() {
             <p className="eyebrow">Contact</p>
             <ul className="mt-5 space-y-2.5 text-sm text-slate-300">
               <li>
-                <a href={`mailto:${SITE.email}`} className="transition-colors hover:text-amber">
+                <a href={`mailto:${SITE.email}`} className="inline-block py-1 transition-colors hover:text-amber">
                   {SITE.email}
                 </a>
               </li>
               {SITE.contacts.map((contact) => (
                 <li key={contact.phone}>
-                  <a href={`tel:${contact.phone}`} className="transition-colors hover:text-amber">
+                  <a href={`tel:${contact.phone}`} className="inline-block py-1 transition-colors hover:text-amber">
                     {contact.name} · {contact.phone}
                   </a>
                 </li>

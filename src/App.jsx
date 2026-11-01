@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Navbar from "./components/common/Navbar/Navbar";
+import FontSwitcher from "./components/common/FontSwitcher/FontSwitcher";
 import Footer from "./components/common/Footer/Footer";
 import CustomCursor from "./components/common/CustomCursor/CustomCursor";
 import ScrollProgress from "./components/common/ScrollProgress/ScrollProgress";
@@ -22,6 +23,10 @@ export default function App() {
           <ScrollProgress />
           <CustomCursor />
           <Navbar />
+          {/* Font test: fixed pill, kept outside the navbar (see data/fontSets.js) */}
+          <div className="fixed bottom-3 left-3 z-[45] sm:bottom-4 sm:left-1/2 sm:-translate-x-1/2">
+            <FontSwitcher variant="float" />
+          </div>
           <main className="relative z-10 flex-1">
             <AppRoutes />
           </main>

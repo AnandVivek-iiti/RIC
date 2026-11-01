@@ -4,7 +4,7 @@ import PageHeader from "../../components/common/PageHeader/PageHeader";
 import Reveal from "../../components/common/Reveal/Reveal";
 import GlassCard from "../../components/common/GlassCard/GlassCard";
 import TagChip from "../../components/common/TagChip/TagChip";
-import { OVERALL_COORDINATORS, HEADS, TEAM_COUNTS } from "../../data/team";
+import { OVERALL_COORDINATORS, HEADS } from "../../data/team";
 
 /* Brand icons (lucide v1 dropped brand logos) */
 function LinkedinIcon({ size = 14 }) {
@@ -36,21 +36,18 @@ function InstagramIcon({ size = 14 }) {
 }
 
 const SIZES = {
-  sm: "h-9 w-9 rounded-lg text-xs",
+  md: "h-12 w-12 rounded-xl text-sm",
   xl: "h-28 w-28 rounded-[1.4rem] text-3xl",
   lg: "h-16 w-16 rounded-xl text-lg",
 };
 
+/* Two letters stand in for the photo: first letters of the first two words,
+   or the first two letters of a single name ("Fiya" -> "FI"). */
 function initialsOf(name = "") {
-  return (
-    name
-      .split(" ")
-      .filter(Boolean)
-      .map((word) => word[0])
-      .join("")
-      .slice(0, 2)
-      .toUpperCase() || "—"
-  );
+  const words = name.split(" ").filter(Boolean);
+  if (words.length === 0) return "—";
+  const letters = words.length === 1 ? words[0].slice(0, 2) : words[0][0] + words[1][0];
+  return letters.toUpperCase();
 }
 
 /* A link only counts as a profile when it points past the platform homepage. */
@@ -133,23 +130,16 @@ function Socials({ person, align = "start" }) {
   );
 }
 
-function TierLabel({ children, count }) {
+function TierLabel({ children }) {
   return (
     <Reveal>
       <div className="mb-8 flex items-center gap-5">
         <h2 className="eyebrow whitespace-nowrap">{children}</h2>
-        {count !== undefined && (
-          <span className="font-mono text-xs tabular-nums text-slate-400">
-            {String(count).padStart(2, "0")}
-          </span>
-        )}
         <span className="h-px flex-1 bg-gradient-to-r from-chalk/15 to-transparent" />
       </div>
     </Reveal>
   );
 }
-
-const pad = (n) => String(n).padStart(2, "0");
 
 export default function Team() {
   const membersByDomain = HEADS.filter((head) => head.team.length > 0);
@@ -160,11 +150,6 @@ export default function Team() {
         eyebrow="The People"
         title="Our Team"
         accent={["Team"]}
-        meta={[
-          { value: pad(TEAM_COUNTS.coordinators), label: "Coordinators" },
-          { value: pad(TEAM_COUNTS.heads), label: "Heads" },
-          { value: pad(TEAM_COUNTS.members), label: "Members" },
-        ]}
       >
         The people behind RIC 2027.
       </PageHeader>
@@ -172,8 +157,8 @@ export default function Team() {
       <div className="container-x pb-32">
         {/* Tier 1: Overall Coordinators, large cards */}
         <section>
-          <TierLabel count={OVERALL_COORDINATORS.length}>Overall Coordinators</TierLabel>
-          <div className="grid gap-5 md:grid-cols-2">
+          <TierLabel>Overall Coordinators</TierLabel>
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
             {OVERALL_COORDINATORS.map((person, index) => (
               <Reveal key={person.id} delay={index * 0.08}>
                 <GlassCard accent="#FFC878" className="h-full rounded-[2rem] p-8 sm:p-10">
@@ -191,7 +176,7 @@ export default function Team() {
                           <li>
                             <a
                               href={`tel:${person.phone}`}
-                              className="inline-flex items-center gap-2 transition-colors hover:text-amber"
+                              className="inline-flex items-center gap-2 py-1 transition-colors hover:text-amber"
                             >
                               <Phone aria-hidden="true" className="h-3.5 w-3.5 text-slate-400" />
                               {person.phone}
@@ -202,7 +187,7 @@ export default function Team() {
                           <li>
                             <a
                               href={`mailto:${person.email}`}
-                              className="inline-flex items-center gap-2 transition-colors hover:text-amber"
+                              className="inline-flex items-center gap-2 py-1 transition-colors hover:text-amber"
                             >
                               <Mail aria-hidden="true" className="h-3.5 w-3.5 text-slate-400" />
                               {person.email}
@@ -221,8 +206,8 @@ export default function Team() {
 
         {/* Tier 2: Heads, compact cards */}
         <section className="mt-24">
-          <TierLabel count={HEADS.length}>Heads</TierLabel>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <TierLabel>Heads</TierLabel>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {HEADS.map((person, index) => (
               <Reveal key={person.id} delay={(index % 3) * 0.07}>
                 <GlassCard accent="#36E5E8" className="h-full rounded-2xl p-5">
@@ -243,25 +228,28 @@ export default function Team() {
           </div>
         </section>
 
-        {/* Tier 3: Members, grouped by domain in a plain grid */}
+        {/* Tier 3: Volunteers, grouped by domain; same card as the heads, smaller */}
         <section className="mt-24">
-          <TierLabel count={TEAM_COUNTS.members}>Members</TierLabel>
+          <TierLabel>Volunteers</TierLabel>
           <div className="space-y-14">
             {membersByDomain.map((head) => (
               <div key={head.id}>
                 <Reveal>
                   <h3 className="mb-5 flex items-baseline gap-3 font-mono text-sm font-semibold uppercase tracking-[0.16em] text-amber">
                     {head.domain}
-                    <span className="text-xs tabular-nums text-slate-400">{pad(head.team.length)}</span>
                   </h3>
                 </Reveal>
                 <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                   {head.team.map((member, i) => (
                     <Reveal as="li" key={`${head.id}-${member.name}-${i}`} delay={(i % 4) * 0.05} y={14}>
-                      <div className="glass flex items-center gap-3 rounded-xl px-3 py-2.5">
-                        <Avatar person={member} size="md" />
-                        <span className="min-w-0 text-md font-medium leading-snug text-chalk">{member.name}</span>
-                      </div>
+                      <GlassCard accent="#36E5E8" className="h-full rounded-2xl p-3">
+                        <div className="flex items-center gap-3">
+                          <Avatar person={member} size="md" />
+                          <span className="min-w-0 text-sm font-medium leading-snug text-chalk">
+                            {member.name}
+                          </span>
+                        </div>
+                      </GlassCard>
                     </Reveal>
                   ))}
                 </ul>

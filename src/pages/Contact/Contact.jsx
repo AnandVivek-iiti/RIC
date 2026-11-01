@@ -120,7 +120,7 @@ export default function Contact() {
         Have a question, an anomaly or a wild idea? Drop us a message and we’ll follow it back to you.
       </PageHeader>
 
-      <section className="container-x grid gap-8 pb-32 lg:grid-cols-[1.25fr_0.75fr]">
+      <section className="container-x grid grid-cols-1 gap-8 pb-32 lg:grid-cols-[1.25fr_0.75fr]">
         {/* Form */}
         <Reveal delay={0.2}>
           <div className="glass-strong rounded-[2rem] p-6 sm:p-10">
@@ -164,7 +164,7 @@ export default function Contact() {
                   exit={{ opacity: 0 }}
                   transition={{ duration: reduce ? 0 : 0.3 }}
                 >
-                  <div className="grid gap-x-6 sm:grid-cols-2">
+                  <div className="grid grid-cols-1 gap-x-6 sm:grid-cols-2">
                     <Field label="Name" id="name" error={showError("name")}>
                       {({ describedBy, invalid }) => (
                         <input
@@ -241,7 +241,7 @@ export default function Contact() {
             <InfoCard icon={Mail} label="Email" accent="#36E5E8">
               <a
                 href={`mailto:${SITE.email}`}
-                className="break-all font-display text-xl font-semibold text-chalk transition-colors hover:text-amber"
+                className="inline-block break-all py-1 font-display text-xl font-semibold text-chalk transition-colors hover:text-amber"
               >
                 {SITE.email}
               </a>
@@ -252,7 +252,7 @@ export default function Contact() {
                 <p className="font-display text-lg font-semibold text-chalk">{contact.name}</p>
                 <a
                   href={`tel:${contact.phone}`}
-                  className="mt-1 inline-block text-sm text-slate-300 transition-colors hover:text-amber"
+                  className="mt-1 inline-block py-1 text-sm text-slate-300 transition-colors hover:text-amber"
                 >
                   {contact.phone}
                 </a>

@@ -32,7 +32,7 @@ function FeaturedCard({ item, index }) {
         aria-label={`${event.name}: view details`}
         className={`flex h-full flex-col justify-between rounded-3xl ${big ? "p-8 sm:p-10" : "p-7"}`}
       >
-        <div className="flex items-start justify-between gap-4">
+        <div className="flex flex-wrap items-start justify-between gap-3">
           <span
             className="grid h-12 w-12 place-items-center rounded-2xl border"
             style={{ borderColor: `${event.accent}55`, color: event.accent }}
@@ -86,7 +86,7 @@ export default function FeaturedEvents() {
         <Reveal delay={0.2}>
           <Link
             to="/events"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-mint-light transition-colors hover:text-amber"
+            className="inline-flex items-center gap-2 py-2 text-sm font-semibold text-mint-light transition-colors hover:text-amber"
           >
             All events
             <ArrowUpRight aria-hidden="true" className="h-4 w-4" />
@@ -94,7 +94,7 @@ export default function FeaturedEvents() {
         </Reveal>
       </div>
 
-      <div className="mt-14 grid gap-5 md:grid-cols-5 md:grid-rows-2">
+      <div className="mt-14 grid grid-cols-1 gap-5 md:grid-cols-5 md:grid-rows-2">
         {FEATURED.map((item, i) => (
           <FeaturedCard key={item.id} item={item} index={i} />
         ))}

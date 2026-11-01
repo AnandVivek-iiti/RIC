@@ -15,7 +15,7 @@ export default function PageHeader({ eyebrow, title, accent = [], meta = [], chi
         accent={accent}
         inView={false}
         delay={0.55}
-        className="mt-7 max-w-4xl text-5xl font-bold leading-[0.95] tracking-tight text-chalk sm:text-7xl"
+        className="mt-7 max-w-4xl text-[clamp(2.25rem,11vw,3rem)] font-bold leading-[0.95] tracking-tight text-chalk sm:text-7xl"
       />
       {children && (
         <Reveal delay={0.9} className="mt-8 max-w-xl text-lg leading-relaxed text-slate-400">

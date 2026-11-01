@@ -88,7 +88,7 @@ export default function About() {
       {/* Values */}
       <section className="container-x py-20 sm:py-28">
         <SectionHeader eyebrow="What we stand for" title="Three habits of mind" accent={[2]} />
-        <div className="mt-14 grid gap-5 md:grid-cols-3">
+        <div className="mt-14 grid grid-cols-1 gap-5 md:grid-cols-3">
           {values.map((value, i) => {
             const Icon = value.icon;
             return (

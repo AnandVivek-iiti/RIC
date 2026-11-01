@@ -31,7 +31,7 @@ function TangentMotif({ accent, angle }) {
 
 export default function TracksShowcase() {
   return (
-    <div className="mt-14 grid gap-5 md:grid-cols-2">
+    <div className="mt-14 grid grid-cols-1 gap-5 md:grid-cols-2">
       {TRACKS.map((track, i) => {
         const look = LOOKS[i % LOOKS.length];
         const Icon = look.icon;
