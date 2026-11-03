@@ -10,7 +10,7 @@ const LOOKS = [
   { icon: Telescope, accent: "#36E5E8", angle: -18 },
   { icon: Cpu, accent: "#FFC878", angle: -6 },
   { icon: Layers, accent: "#ECEAF6", angle: 8 },
-  { icon: Compass, accent: "#E0A24F", angle: 20 },
+  { icon: Compass, accent: "#36E5E8", angle: 20 },
 ];
 
 function TangentMotif({ accent, angle }) {

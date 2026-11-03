@@ -3,7 +3,7 @@
  * Text follows the organisers' draft (file_draft_events.docx) with minor
  * grammar fixes only. `summary` is the one-line version used on cards;
  * `desc` is the full text shown in the event spotlight.
- * Accent colours are the existing palette values, one per category.
+ * Accent colours: white, cyan and amber only; categories of one colour sit next to each other.
  */
 export const eventCategories = [
   {
@@ -12,7 +12,7 @@ export const eventCategories = [
     short: "Workshops",
     subtitle: "Skills, guidance and expert conversation",
     icon: "Mic",
-    accent: "#D9D2F0",
+    accent: "#ECEAF6",
     events: [
       {
         id: "paper-writing-workshop",
@@ -67,6 +67,24 @@ export const eventCategories = [
     ],
   },
   {
+    id: "humanities",
+    title: "Humanities",
+    short: "Humanities",
+    subtitle: "Ethics, society and decisions in the real world",
+    icon: "Scale",
+    accent: "#36E5E8",
+    events: [
+      {
+        id: "case-chronicles-zero-day-debate",
+        name: "Case Chronicles & Zero-Day Debate",
+        tag: "Humanities-led",
+        icon: "Scale",
+        summary: "Not just about how, but why: a critical look at real decision-making.",
+        desc: "Not just about how, but why. This event encourages students to look at situations through a critical lens and examine, on ethical, social and humanitarian grounds, scenarios that reflect real decision-making in the world.",
+      },
+    ],
+  },
+  {
     id: "innovation-tech",
     title: "Innovation & Tech",
     short: "Innovation",
@@ -101,30 +119,12 @@ export const eventCategories = [
     ],
   },
   {
-    id: "humanities",
-    title: "Humanities",
-    short: "Humanities",
-    subtitle: "Ethics, society and decisions in the real world",
-    icon: "Scale",
-    accent: "#1FA9AD",
-    events: [
-      {
-        id: "case-chronicles-zero-day-debate",
-        name: "Case Chronicles & Zero-Day Debate",
-        tag: "Humanities-led",
-        icon: "Scale",
-        summary: "Not just about how, but why: a critical look at real decision-making.",
-        desc: "Not just about how, but why. This event encourages students to look at situations through a critical lens and examine, on ethical, social and humanitarian grounds, scenarios that reflect real decision-making in the world.",
-      },
-    ],
-  },
-  {
     id: "school",
     title: "School",
     short: "School",
     subtitle: "Competitions for school students",
     icon: "School",
-    accent: "#E0A24F",
+    accent: "#FFC878",
     events: [
       {
         id: "writing-competition",
