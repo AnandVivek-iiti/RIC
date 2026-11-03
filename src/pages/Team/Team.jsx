@@ -35,12 +35,6 @@ function InstagramIcon({ size = 14 }) {
   );
 }
 
-const SIZES = {
-  sm: "h-9 w-9 rounded-lg text-xs",
-  xl: "h-28 w-28 rounded-[1.4rem] text-3xl",
-  lg: "h-16 w-16 rounded-xl text-lg",
-};
-
 function initialsOf(name = "") {
   return (
     name
@@ -63,34 +57,7 @@ function isProfileLink(url) {
   }
 }
 
-/* Avatar: photo with initials fallback */
-function Avatar({ person, size = "lg" }) {
-  const [broken, setBroken] = useState(false);
-  const cls = SIZES[size] ?? SIZES.lg;
-
-  if (person.photo && !broken) {
-    return (
-      <div className={`${cls} shrink-0 overflow-hidden`}>
-        <img
-          src={person.photo}
-          alt={person.name}
-          onError={() => setBroken(true)}
-          className="h-full w-full object-cover object-top"
-        />
-      </div>
-    );
-  }
-
-  return (
-    <div
-      className={`${cls} flex shrink-0 items-center justify-center bg-gradient-to-br from-amber-light via-amber to-amber-dark font-display font-bold text-ink`}
-    >
-      {initialsOf(person.name)}
-    </div>
-  );
-}
-
-/* Head card photo: fills the card edge to edge, square, with an initials fallback */
+/* Card photo: fills the card edge to edge, square, with an initials fallback */
 function CardPhoto({ person }) {
   const [broken, setBroken] = useState(false);
 
@@ -167,6 +134,56 @@ function TierLabel({ children }) {
   );
 }
 
+/* One card for everybody: full-width photo, badge, name, role line, optional contacts, icons */
+function PersonCard({ person, accent, badge, subtitle, contacts = false }) {
+  return (
+    <GlassCard accent={accent} className="flex h-full flex-col rounded-2xl">
+      <CardPhoto person={person} />
+      <div className="flex flex-1 flex-col items-center px-5 pb-6 pt-5 text-center">
+        <TagChip accent={accent}>{badge}</TagChip>
+        <h3 className="mt-3 font-sub text-lg font-semibold leading-snug text-chalk">{person.name}</h3>
+        {subtitle && (
+          <p className="mt-1 text-sm" style={{ color: accent }}>
+            {subtitle}
+          </p>
+        )}
+        {person.roll && <p className="mt-1 font-mono text-xs text-slate-400">{person.roll}</p>}
+        {contacts && (person.phone || person.email) && (
+          <ul className="mt-3 space-y-1 text-xs text-slate-300">
+            {person.phone && (
+              <li>
+                <a
+                  href={`tel:${person.phone}`}
+                  className="inline-flex items-center gap-1.5 transition-colors hover:text-amber"
+                >
+                  <Phone aria-hidden="true" className="h-3 w-3 text-slate-400" />
+                  {person.phone}
+                </a>
+              </li>
+            )}
+            {person.email && (
+              <li>
+                <a
+                  href={`mailto:${person.email}`}
+                  className="inline-flex items-center gap-1.5 break-all transition-colors hover:text-amber"
+                >
+                  <Mail aria-hidden="true" className="h-3 w-3 shrink-0 text-slate-400" />
+                  {person.email}
+                </a>
+              </li>
+            )}
+          </ul>
+        )}
+        <div className="mt-auto w-full">
+          <Socials person={contacts ? { ...person, email: "" } : person} align="center" />
+        </div>
+      </div>
+    </GlassCard>
+  );
+}
+
+const CARD_GRID = "grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
+
 export default function Team() {
   const membersByDomain = HEADS.filter((head) => head.team.length > 0);
 
@@ -181,81 +198,34 @@ export default function Team() {
       </PageHeader>
 
       <div className="container-x pb-32">
-        {/* Tier 1: Overall Coordinators, large cards */}
+        {/* Tier 1: Overall Coordinators */}
         <section>
           <TierLabel>Overall Coordinators</TierLabel>
-          <div className="grid gap-5 md:grid-cols-2">
-            {OVERALL_COORDINATORS.map((person, index) => (
-              <Reveal key={person.id} delay={index * 0.08}>
-                <GlassCard accent="#FFC878" className="h-full rounded-[2rem] p-8 sm:p-10">
-                  <div className="flex flex-col gap-7 sm:flex-row sm:items-center">
-                    <div className="rounded-3xl bg-gradient-to-br from-amber/50 via-transparent to-mint/40 p-[2px]">
-                      <Avatar person={person} size="xl" />
-                    </div>
-                    <div className="min-w-0">
-                      <TagChip accent="#FFC878">{person.title}</TagChip>
-                      <h3 className="mt-4 font-sub text-3xl font-bold leading-tight tracking-tight text-chalk">
-                        {person.name}
-                      </h3>
-                      <ul className="mt-4 space-y-1.5 text-sm text-slate-300">
-                        {person.phone && (
-                          <li>
-                            <a
-                              href={`tel:${person.phone}`}
-                              className="inline-flex items-center gap-2 transition-colors hover:text-amber"
-                            >
-                              <Phone aria-hidden="true" className="h-3.5 w-3.5 text-slate-400" />
-                              {person.phone}
-                            </a>
-                          </li>
-                        )}
-                        {person.email && (
-                          <li>
-                            <a
-                              href={`mailto:${person.email}`}
-                              className="inline-flex items-center gap-2 transition-colors hover:text-amber"
-                            >
-                              <Mail aria-hidden="true" className="h-3.5 w-3.5 text-slate-400" />
-                              {person.email}
-                            </a>
-                          </li>
-                        )}
-                      </ul>
-                      <Socials person={{ ...person, email: "" }} />
-                    </div>
-                  </div>
-                </GlassCard>
-              </Reveal>
-            ))}
+          <div className={CARD_GRID}>
+            {OVERALL_COORDINATORS.map((person, index) => {
+              const [badge, group] = person.title.split(" — ");
+              return (
+                <Reveal key={person.id} delay={index * 0.07}>
+                  <PersonCard person={person} accent="#FFC878" badge={badge} subtitle={group} contacts />
+                </Reveal>
+              );
+            })}
           </div>
         </section>
 
-        {/* Tier 2: Heads, compact cards */}
+        {/* Tier 2: Heads */}
         <section className="mt-24">
           <TierLabel>Heads</TierLabel>
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className={CARD_GRID}>
             {HEADS.map((person, index) => (
               <Reveal key={person.id} delay={(index % 4) * 0.07}>
-                <GlassCard accent="#36E5E8" className="flex h-full flex-col rounded-2xl">
-                  <CardPhoto person={person} />
-                  <div className="flex flex-1 flex-col items-center px-5 pb-6 pt-5 text-center">
-                    <TagChip accent="#36E5E8">Head</TagChip>
-                    <h3 className="mt-3 font-sub text-lg font-semibold leading-snug text-chalk">{person.name}</h3>
-                    <p className="mt-1 text-sm text-mint-light">{person.domain}</p>
-                    {person.roll && (
-                      <p className="mt-1 font-mono text-xs text-slate-400">{person.roll}</p>
-                    )}
-                    <div className="mt-auto w-full">
-                      <Socials person={person} align="center" />
-                    </div>
-                  </div>
-                </GlassCard>
+                <PersonCard person={person} accent="#36E5E8" badge="Head" subtitle={person.domain} />
               </Reveal>
             ))}
           </div>
         </section>
 
-        {/* Tier 3: Members, grouped by domain in a plain grid */}
+        {/* Tier 3: Members, grouped by domain */}
         <section className="mt-24">
           <TierLabel>Members</TierLabel>
           <div className="space-y-14">
@@ -266,13 +236,10 @@ export default function Team() {
                     {head.domain}
                   </h3>
                 </Reveal>
-                <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                <ul className={CARD_GRID}>
                   {head.team.map((member, i) => (
                     <Reveal as="li" key={`${head.id}-${member.name}-${i}`} delay={(i % 4) * 0.05} y={14}>
-                      <div className="glass flex items-center gap-3 rounded-xl px-3 py-2.5">
-                        <Avatar person={member} size="md" />
-                        <span className="min-w-0 text-md font-medium leading-snug text-chalk">{member.name}</span>
-                      </div>
+                      <PersonCard person={member} accent="#ECEAF6" badge="Member" subtitle={head.domain} />
                     </Reveal>
                   ))}
                 </ul>
