@@ -6,6 +6,60 @@
 const DEFAULT_LINKEDIN = "https://www.linkedin.com/";
 const DEFAULT_INSTAGRAM = "https://www.instagram.com/";
 
+/* Photos: drop an image named after the person's slug (e.g. amaan-ali.jpg) into
+   src/assets/team/ — any of jpg/jpeg/png/webp. No file means the initials fallback. */
+const PHOTO_FILES = import.meta.glob("../assets/team/*.{jpg,jpeg,png,webp}", {
+  eager: true,
+  query: "?url",
+  import: "default",
+});
+
+const photoOf = (slug) => {
+  const key = Object.keys(PHOTO_FILES).find(
+    (path) => path.split("/").pop().replace(/\.[^.]+$/, "").toLowerCase() === slug,
+  );
+  return key ? PHOTO_FILES[key] : "";
+};
+
+/* Contact details people submitted through the team form, keyed by roll number.
+   Only email and public profile links are kept here. */
+const PROFILES = {
+  CHE250008011: {
+    email: "che250008011@iiti.ac.in",
+    instagram: "https://www.instagram.com/swathi_0913",
+    linkedin: "https://www.linkedin.com/in/swathi-devanaboina-455621377",
+    photo: photoOf("swathi-devanaboina"),
+  },
+  CHE260008007: {
+    email: "che260008010@iiti.ac.in",
+    linkedin: "https://www.linkedin.com/in/anubathula-karthik-0b7318420",
+    photo: photoOf("anubathula-karthik"),
+  },
+  MSC2603171006: {
+    email: "msc2603171006@iiti.ac.in",
+    instagram: "https://www.instagram.com/ayush2004588",
+    photo: photoOf("ayush-aggarwal"),
+  },
+  ME250003049: {
+    email: "me250003049@iiti.ac.in",
+    instagram: "https://www.instagram.com/mahisingh_1607",
+    linkedin: "https://www.linkedin.com/in/mahi-singh-sengar-b712b4377",
+    photo: photoOf("mahi-singh-sengar"),
+  },
+  CE250004012: {
+    email: "ce250004012@iiti.ac.in",
+    instagram: "https://www.instagram.com/dishayadav8597",
+    linkedin: "https://www.linkedin.com/in/disha-yadav-10420b377",
+    photo: photoOf("disha-yadav"),
+  },
+  CE260004001: {
+    email: "ce260004001@iiti.ac.in",
+    instagram: "https://www.instagram.com/aaradhya_2138",
+    linkedin: "https://www.linkedin.com/in/aaradhya-bhardwaj-791572417",
+    photo: photoOf("aaradhya-bhardwaj"),
+  },
+};
+
 // member factory (people under a head)
 const member = (name, roll, domains = []) => ({
   name,
@@ -15,6 +69,7 @@ const member = (name, roll, domains = []) => ({
   email: "",
   linkedin: DEFAULT_LINKEDIN,
   instagram: DEFAULT_INSTAGRAM,
+  ...PROFILES[roll],
 });
 
 export const OVERALL_COORDINATORS = [
@@ -25,9 +80,9 @@ export const OVERALL_COORDINATORS = [
     roll: "",
     email: "ric@iiti.ac.in",
     phone: "+91-7417201863",
-    photo: "",
-    linkedin: DEFAULT_LINKEDIN,
-    instagram: DEFAULT_INSTAGRAM,
+    photo: photoOf("shaikh-ubaid-ahmed"),
+    linkedin: "https://www.linkedin.com/in/shaikhubaidahmed",
+    instagram: "https://www.instagram.com/shaikhubaid.__",
   },
   {
     id: "oc-ug",
@@ -49,7 +104,7 @@ export const HEADS = [
     domain: "Web Development",
     name: "Anand Vivek",
     roll: "240003006",
-    photo: "/public/main.jpg",
+    photo: "/main.jpg",
     email: "me240003006@iiti.ac.in",
     linkedin: "https://www.linkedin.com/in/anandvivek1223",
     instagram: "https://www.instagram.com/anandvivek1223",
@@ -119,10 +174,10 @@ export const HEADS = [
     domain: "Creatives",
     name: "Amaan Ali",
     roll: "250021002",
-    photo: "",
-    email: "",
-    linkedin: DEFAULT_LINKEDIN,
-    instagram: DEFAULT_INSTAGRAM,
+    photo: photoOf("amaan-ali"),
+    email: "sse250021002@iiti.ac.in",
+    linkedin: "https://www.linkedin.com/in/amaan-ali-63596a374",
+    instagram: "https://www.instagram.com/beyiamaan",
     team: [
       member("Devanaboina Swathi", "CHE250008011", ["Creatives"],"https://www.linkedin.com"),
       member("Vedika Vishwakarma", "CE250004050", ["Creatives"]),

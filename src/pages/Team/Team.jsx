@@ -90,6 +90,29 @@ function Avatar({ person, size = "lg" }) {
   );
 }
 
+/* Head card photo: fills the card edge to edge, square, with an initials fallback */
+function CardPhoto({ person }) {
+  const [broken, setBroken] = useState(false);
+
+  return (
+    <div className="aspect-square w-full overflow-hidden">
+      {person.photo && !broken ? (
+        <img
+          src={person.photo}
+          alt={person.name}
+          loading="lazy"
+          onError={() => setBroken(true)}
+          className="h-full w-full object-cover object-top transition-transform duration-700 ease-expo group-hover:scale-105"
+        />
+      ) : (
+        <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-amber-light via-amber to-amber-dark font-display text-7xl font-bold text-ink">
+          {initialsOf(person.name)}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function Socials({ person, align = "start" }) {
   const links = [
     person.email && {
@@ -210,21 +233,22 @@ export default function Team() {
         {/* Tier 2: Heads, compact cards */}
         <section className="mt-24">
           <TierLabel>Heads</TierLabel>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {HEADS.map((person, index) => (
-              <Reveal key={person.id} delay={(index % 3) * 0.07}>
-                <GlassCard accent="#36E5E8" className="h-full rounded-2xl p-5">
-                  <div className="flex items-center gap-4">
-                    <Avatar person={person} size="lg" />
-                    <div className="min-w-0">
-                      <h3 className="font-sub text-lg font-semibold leading-snug text-chalk">{person.name}</h3>
-                      <p className="mt-1 text-sm text-mint-light">{person.role}</p>
-                      {person.roll && (
-                        <p className="mt-1 font-mono text-xs text-slate-400">{person.roll}</p>
-                      )}
+              <Reveal key={person.id} delay={(index % 4) * 0.07}>
+                <GlassCard accent="#36E5E8" className="flex h-full flex-col rounded-2xl">
+                  <CardPhoto person={person} />
+                  <div className="flex flex-1 flex-col items-center px-5 pb-6 pt-5 text-center">
+                    <TagChip accent="#36E5E8">Head</TagChip>
+                    <h3 className="mt-3 font-sub text-lg font-semibold leading-snug text-chalk">{person.name}</h3>
+                    <p className="mt-1 text-sm text-mint-light">{person.domain}</p>
+                    {person.roll && (
+                      <p className="mt-1 font-mono text-xs text-slate-400">{person.roll}</p>
+                    )}
+                    <div className="mt-auto w-full">
+                      <Socials person={person} align="center" />
                     </div>
                   </div>
-                  <Socials person={person} />
                 </GlassCard>
               </Reveal>
             ))}
