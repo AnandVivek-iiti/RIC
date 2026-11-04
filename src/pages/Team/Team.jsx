@@ -35,16 +35,12 @@ function InstagramIcon({ size = 14 }) {
   );
 }
 
+/* Two letters stand in for a missing photo: first letters of the first two words,
+   or the first two letters of a single name ("Fiya" -> "FI"). */
 function initialsOf(name = "") {
-  return (
-    name
-      .split(" ")
-      .filter(Boolean)
-      .map((word) => word[0])
-      .join("")
-      .slice(0, 2)
-      .toUpperCase() || "—"
-  );
+  const words = name.split(" ").filter(Boolean);
+  if (words.length === 0) return "—";
+  return (words.length === 1 ? words[0].slice(0, 2) : words[0][0] + words[1][0]).toUpperCase();
 }
 
 /* A link only counts as a profile when it points past the platform homepage. */
@@ -68,6 +64,7 @@ function CardPhoto({ person }) {
           src={person.photo}
           alt={person.name}
           loading="lazy"
+          referrerPolicy="no-referrer"
           onError={() => setBroken(true)}
           className="h-full w-full object-cover object-top transition-transform duration-700 ease-expo group-hover:scale-105"
         />
