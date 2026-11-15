@@ -1,23 +1,50 @@
 
 const DEFAULT_LINKEDIN = "https://www.linkedin.com/";
 const DEFAULT_INSTAGRAM = "https://www.instagram.com/";
-const PHOTO_FILES = import.meta.glob("../assets/team/*.{jpg,jpeg,png,webp}", {
-  eager: true,
-  query: "?url",
-  import: "default",
-});
+/* Photos live in public/team/ (served as /team/<file>). Add a new photo by dropping
+   the file there and adding its exact file name to this list. */
+const PHOTO_DIR = "team";
+const PHOTO_NAMES = [
+  "aaradhya-bhardwaj.jpg",
+  "aditya-singh.jpg",
+  "amaan-ali.jpeg",
+  "anand-vivek.jpg",
+  "anubathula-karthik.jpg",
+  "arya-patil.png",
+  "ayush-aggarwal.jpg",
+  "bhoomi-shakya.png",
+  "chinde-vaishnavi-ramesh.jpg",
+  "disha-yadav.jpg",
+  "fiya.jpeg",
+  "gaurav-rajput.jpg",
+  "harsh-kasera.png",
+  "leena-rosin-nethala.jpg",
+  "mahi-maheshwari.jpg",
+  "mahi-singh-sengar.jpg",
+  "nainika-baheti.jpg",
+  "namish-patil.jpg",
+  "shaikh-ubaid-ahmed.jpeg",
+  "shubhangi-uikey.jpeg",
+  "swathi-devanaboina.jpg",
+  "uddeseya-raj.jpg",
+  "vaidehi-nitinkumar-bhosale.jpeg",
+  "vedika-vishwakarma.jpg",
+  "virendra-kumar-giya.jpeg",
+];
 
 const slugOf = (name = "") =>
   name.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
 const drivePhoto = (id) => `https://drive.google.com/thumbnail?id=${id}&sz=w800`;
 
-const photoOf = (slug) => {
-  const key = Object.keys(PHOTO_FILES).find(
-    (path) => path.split("/").pop().replace(/\.[^.]+$/, "").toLowerCase() === slug,
-  );
-  return key ? PHOTO_FILES[key] : "";
-};
+const PHOTO_URLS = Object.fromEntries(
+  PHOTO_NAMES.map((file) => [
+    file.replace(/\.[^.]+$/, "").toLowerCase(),
+    `${import.meta.env.BASE_URL}${PHOTO_DIR}/${file}`,
+  ]),
+);
+
+const photoOf = (slug) => PHOTO_URLS[slug] ?? "";
 
 const PROFILES = {
   // Heads and coordinators
@@ -42,7 +69,7 @@ const PROFILES = {
     linkedin: "https://www.linkedin.com/in/amaan-ali-63596a374",
     drive: "1fJsGaeHbsFwPpqI2gMb4xIlPfZbEUsTw",
   },
-  // Overall coordinators keep the shared ric@iiti.ac.in address as their public email
+
   MS2504101015: {
     instagram: "https://www.instagram.com/shaikhubaid.__",
     linkedin: "https://www.linkedin.com/in/shaikhubaidahmed",
@@ -241,8 +268,9 @@ export const HEADS = [
     instagram: DEFAULT_INSTAGRAM,
     ...profileOf("ME240003006", "Anand Vivek"),
     team: [
-      member("Harsh Kasera", "ME250003035", ["Web Development"]),
+
       member("Mahi Singh Sengar", "ME250003049", ["Web Development"]),
+      member("Harsh Kasera", "ME250003035", ["Web Development"]),
     ],
   },
   {
