@@ -59,9 +59,9 @@ function CardPhoto({ person }) {
 
   return (
     <div className="aspect-square w-full overflow-hidden">
-      {person.photo && !broken ? (
+      {person.image && !broken ? (
         <img
-          src={person.photo}
+          src={person.image}
           alt={person.name}
           loading="lazy"
           referrerPolicy="no-referrer"
@@ -182,7 +182,7 @@ function PersonCard({ person, accent, badge, subtitle, contacts = false }) {
 const CARD_GRID = "grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
 
 export default function Team() {
-  const membersByDomain = HEADS.filter((head) => head.team.length > 0);
+  const membersByDomain = HEADS.filter((head) => head.members.length > 0);
 
   return (
     <div>
@@ -199,14 +199,11 @@ export default function Team() {
         <section>
           <TierLabel>Overall Coordinators</TierLabel>
           <div className={CARD_GRID}>
-            {OVERALL_COORDINATORS.map((person, index) => {
-              const [badge, group] = person.title.split(" — ");
-              return (
-                <Reveal key={person.id} delay={index * 0.07}>
-                  <PersonCard person={person} accent="#FFC878" badge={badge} subtitle={group} contacts />
-                </Reveal>
-              );
-            })}
+            {OVERALL_COORDINATORS.map((person, index) => (
+              <Reveal key={person.name} delay={index * 0.07}>
+                <PersonCard person={person} accent="#FFC878" badge={person.position} subtitle={person.team} contacts />
+              </Reveal>
+            ))}
           </div>
         </section>
 
@@ -215,8 +212,8 @@ export default function Team() {
           <TierLabel>Heads</TierLabel>
           <div className={CARD_GRID}>
             {HEADS.map((person, index) => (
-              <Reveal key={person.id} delay={(index % 4) * 0.07}>
-                <PersonCard person={person} accent="#36E5E8" badge="Head" subtitle={person.domain} />
+              <Reveal key={person.name} delay={(index % 4) * 0.07}>
+                <PersonCard person={person} accent="#36E5E8" badge={person.position} subtitle={person.team} />
               </Reveal>
             ))}
           </div>
@@ -227,16 +224,16 @@ export default function Team() {
           <TierLabel>Members</TierLabel>
           <div className="space-y-14">
             {membersByDomain.map((head) => (
-              <div key={head.id}>
+              <div key={head.team}>
                 <Reveal>
                   <h3 className="mb-5 font-mono text-sm font-semibold uppercase tracking-[0.16em] text-amber">
-                    {head.domain}
+                    {head.team}
                   </h3>
                 </Reveal>
                 <ul className={CARD_GRID}>
-                  {head.team.map((member, i) => (
-                    <Reveal as="li" key={`${head.id}-${member.name}-${i}`} delay={(i % 4) * 0.05} y={14}>
-                      <PersonCard person={member} accent="#ECEAF6" badge="Member" subtitle={head.domain} />
+                  {head.members.map((member, i) => (
+                    <Reveal as="li" key={`${head.team}-${member.name}-${i}`} delay={(i % 4) * 0.05} y={14}>
+                      <PersonCard person={member} accent="#ECEAF6" badge={member.position} subtitle={member.team} />
                     </Reveal>
                   ))}
                 </ul>
