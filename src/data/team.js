@@ -35,6 +35,17 @@ export const HEADS = [
     instagram: "https://www.instagram.com/anandvivek1223",
     linkedin: "https://www.linkedin.com/in/anandvivek1223",
     members: [
+            {
+        name: "Mahi Singh Sengar",
+        image: "/team/mahi-singh-sengar.jpg",
+        team: "Web Development",
+        position: "Member",
+        roll: "ME250003049",
+        email: "me250003049@iiti.ac.in",
+        phone: "+91-6392498804",
+        instagram: "https://www.instagram.com/mahisingh_1607",
+        linkedin: "https://www.linkedin.com/in/mahi-singh-sengar-b712b4377",
+      },
       {
         name: "Harsh Kasera",
         image: "/team/harsh-kasera.png",
@@ -46,17 +57,7 @@ export const HEADS = [
         instagram: "https://www.instagram.com/harshkasera263",
         linkedin: "https://www.linkedin.com/in/harsh-kasera-076774310",
       },
-      {
-        name: "Mahi Singh Sengar",
-        image: "/team/mahi-singh-sengar.jpg",
-        team: "Web Development",
-        position: "Member",
-        roll: "ME250003049",
-        email: "me250003049@iiti.ac.in",
-        phone: "+91-6392498804",
-        instagram: "https://www.instagram.com/mahisingh_1607",
-        linkedin: "https://www.linkedin.com/in/mahi-singh-sengar-b712b4377",
-      },
+
     ],
   },
   {
