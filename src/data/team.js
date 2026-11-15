@@ -26,7 +26,7 @@ export const OVERALL_COORDINATORS = [
 export const HEADS = [
   {
     name: "Anand Vivek",
-    image: "/team/anand-vivek.jpg",
+    image: "/team/anand-vivek.jpeg",
     team: "Web Development",
     position: "Head",
     roll: "240003006",
@@ -230,7 +230,7 @@ export const HEADS = [
       },
       {
         name: "Ayush Aggarwal",
-        image: "/team/ayush-aggarwal.jpg",
+        image: "/team/ayush-aggarwal.jpeg",
         team: "Events (PG)",
         position: "Member",
         roll: "MSC2603171006",
@@ -313,7 +313,7 @@ export const HEADS = [
         team: "Creatives",
         position: "Member",
         roll: "CHE260008007",
-        email: "che260008010@iiti.ac.in",
+        email: "che260008007@iiti.ac.in",
         phone: "+91-9701912624",
         instagram: null,
         linkedin: "https://www.linkedin.com/in/anubathula-karthik-0b7318420",
@@ -357,10 +357,10 @@ export const HEADS = [
   },
   {
     name: "Madhur Mohan Mittal",
-    image: "/team/madhur-mohan-mittal.jpg",
+    image: "/team/madhur-mohan-mittal.jpeg",
     team: "OPNL",
     position: "Head",
-    roll: "250002036",
+    roll: "EE250002036",
     email: "ee250002036@iiti.ac.in",
     phone: "+91-8435195465",
     instagram: "https://www.instagram.com/madhur_.mittal",
